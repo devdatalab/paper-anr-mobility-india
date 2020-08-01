@@ -10,7 +10,7 @@ This repository contains:
 
 - Replication code for results in the paper (currently incomplete)
 
-The replication data can be found in [this Dropbox folder](https://www.dropbox.com/sh/bk0d3jbweoailzw/AACj1XIP-5Vzt5iYpXXq4y3ia?dl=0).
+The replication data can be found in [this Dropbox folder](https://www.dropbox.com/sh/bk0d3jbweoailzw/AACj1XIP-5Vzt5iYpXXq4y3ia?dl=0). (So far, you will find the local mobility estimates but not replication data.)
 
 ## Local Upward Mobility Estimates
 
@@ -21,7 +21,7 @@ The replication data can be found in [this Dropbox folder](https://www.dropbox.c
 | `mobility_subdist_rural` | Rural subdistrict-level mobility |
 | `mobility_town`          | Town-level mobility              |
 
-Each data files contains the following fields:
+Each data file contains the following fields:
 
 | Variable      | Description                                          |
 |---------------|------------------------------------------------------|
@@ -33,7 +33,7 @@ Each data files contains the following fields:
 
 The data and calculations underlying these measures are described in sections 4 and 5.3 of [the paper](https://www.dartmouth.edu/~novosad/anr-mobility.pdf).
 
-mu-0-50 describes the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort). As described in more detail in the paper, the sample consists of sons aged 20-23 recorded in the 2011-12 Socioeconomic and Caste Census.
+Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort). As described in more detail in the paper, the sample consists of sons aged 20-23 recorded in the 2011-12 Socioeconomic and Caste Census.
 
 ## Calculating measures of mobility using ANR2020 (Stata)
 
@@ -44,8 +44,8 @@ This package calculates the following measures in data with interval-censored ra
 | Upward mobility (mu-0-50)  | The expected outcome of a child born to a parent in the bottom half of the parent education distribution, also called *bottom half mobility*. |
 | mu-a-b                     | The expected outcome of a child born to a parent between percentiles $a$ and $b$ in the parent education distribution.                        |
 | E(Y > 80&#124;X in [0,20]) | The probability that a child born to a parent in the bottom quintile makes it to the top quintile. (Substitute any other rank boundaries)     |
-| p-25 = E(Y&#124;X=25)      | Absolute upward mobility (from Chetty et al. QJE 2014)                                                                                        |
-| p-i = E(Y&#124;X=i)        | Absolute mobility at rank *i*                                                                                                                 |
+| p_25 = E(Y&#124;X=25)      | Absolute upward mobility (from Chetty et al. QJE 2014)                                                                                        |
+| p_i = E(Y&#124;X=i)        | Absolute mobility at rank *i*                                                                                                                 |
 
 In Stata, use `bound_mobility()` in `mobility_programs.do`.
 
@@ -128,7 +128,7 @@ The stata program `make_mobility.do` will run the entire data build and analysis
 
 | global    | description                       |
 |-----------|-----------------------------------|
-| $out      | path for output graphs and tables |
-| $mobcode  | path to root folder of this repo  |
-| $mobility | root data folder                  |
-| $bs       | Number of bootstraps (try 1000)   |
+| `$out`      | path for output graphs and tables |
+| `$mobcode`  | path to root folder of this repo  |
+| `$mobility` | root data folder                  |
+| `$bs`       | Number of bootstraps (try 1000)   |
