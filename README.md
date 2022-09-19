@@ -4,40 +4,17 @@ Replication and Data Repository for "[Intergenerational Mobility in India: New M
 
 This repository contains:
 
-- Local upward mobility estimates for India at district, subdistrict, and town levels.
-
 - Code for generating bottom half mobility and other CEF-based measures of intergenerational mobility from interval-censored rank data (e.g. education levels/ranks).
 
-- Replication code for results in the paper (currently incomplete)
+- Replication code for results in the paper (may not be up to date with latest draft)
 
-The replication data can be found in [this Dropbox folder](https://www.dropbox.com/sh/bk0d3jbweoailzw/AACj1XIP-5Vzt5iYpXXq4y3ia?dl=0). (So far, you will find the local mobility estimates but not replication data.)
+Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort).
 
-## Local Upward Mobility Estimates
-
-| CSV/DTA files            | Description                      |
-|--------------------------|----------------------------------|
-| `mobility_dist_rural`    | Rural district-level mobility    |
-| `mobility_dist_urban`    | Urban district-level mobility    |
-| `mobility_subdist_rural` | Rural subdistrict-level mobility |
-| `mobility_town`          | Town-level mobility              |
-
-Each data file contains the following fields:
-
-| Variable      | Description                                          |
-|---------------|------------------------------------------------------|
-| `pc*_id`      | Location identifier matching 2011 Population Census  |
-| `mu_0_50_lb`  | Lower bound on bottom half mobility (mu-0-50)        |
-| `mu_0_50_ub`  | Upper bound on bottom half mobility (mu-0-50)        |
-| `mu_0_50_mid` | Midpoint of bounds on bottom half mobility (mu-0-50) |
-| `n_obs`       | Number of parent-child links used to measure mu-0-50 |
-
-The data and calculations underlying these measures are described in sections 4 and 5.3 of [the paper](https://www.dartmouth.edu/~novosad/anr-mobility.pdf).
-
-Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort). As described in more detail in the paper, the sample consists of sons aged 20-23 recorded in the 2011-12 Socioeconomic and Caste Census.
+Replication data can be found at this dropbox link.
 
 ## Calculating measures of mobility using ANR2020 (Stata)
 
-This package calculates the following measures in data with interval-censored ranks:
+The code here can calculate the following measures (among others) in data with interval-censored ranks:
 
 | Measure                    | Definition                                                                                                                                    |
 |----------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------|
@@ -63,6 +40,8 @@ In Stata, use `bound_mobility()` in `mobility_programs.do`.
 | verbose             | run noisily                                                 |
 
 ### Examples
+
+The examples below use the Stata file [mobility_sample.dta](FIX DROPBOX LINK).
 
 Calculate bottom half mobility (mu-0-50) from fathers to sons:
 
@@ -122,7 +101,13 @@ The Matlab code can be readily modified to impose any kind of structural constra
 
 ## Replication Code and Data for ANR2020
 
-This section is incomplete. Analysis replication files are here (updated July 2020) but they cannot be run without the underlying data. We are working on this release.
+This section is incomplete. Analysis replication files are here for the core results (updated July 2022), using data in the Dropbox folder. Some data files for secondary analyses may be missing. The data files available make it at least possible to generate the core results in:
+
+- `a/graph_levels_time.do`
+- `a/graph_non_param.do`
+- `a/graph_mob_time.do`
+- `a/graph_subgroup_mob.do`
+- `a/graph_mech_aa.do`
 
 The stata program `make_mobility.do` will run the entire data build and analysis. The dofiles for the build are in `b/` (not there yet) and for analysis in `a/`. The following globals need to be set for the code to run:
 
@@ -132,3 +117,4 @@ The stata program `make_mobility.do` will run the entire data build and analysis
 | `$mobcode`  | path to root folder of this repo  |
 | `$mobility` | root data folder                  |
 | `$bs`       | Number of bootstraps (try 1000)   |
+
