@@ -10,7 +10,7 @@ This repository contains:
 
 Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort).
 
-Replication data can be found at this dropbox link.
+Replication data can be found at this [dropbox link](https://www.dropbox.com/sh/bk0d3jbweoailzw/AACj1XIP-5Vzt5iYpXXq4y3ia?dl=0); replication code is in the `a/` folder of this repo.
 
 ## Calculating measures of mobility using ANR2020 (Stata)
 
@@ -41,7 +41,7 @@ In Stata, use `bound_mobility()` in `mobility_programs.do`.
 
 ### Examples
 
-The examples below use the Stata file [mobility_sample.dta](FIX DROPBOX LINK).
+The examples below use the Stata file `mobility_sample.dta` in the repo root.
 
 Calculate bottom half mobility (mu-0-50) from fathers to sons:
 
