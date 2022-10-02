@@ -1,6 +1,16 @@
 /*********************************************************/
 /* SHOW BOUNDS ON P25, MU50, AND GRADIENT FOR 1960->1980 */
 /*********************************************************/
+
+/* possible values to use for the U.S.
+- income rank-rank gradient from Chetty: 34.1 (p.2, described as 3.41), Denmark 18
+- Hertz (2008): correlation: Denmark: 0.49 in Table 2, 0.3 in Table 7; USA: 0.46 in both.
+
+We use: gradients from Hertz, p25/mu50 from Chetty.
+
+*/
+
+
 /* store values for USA/DEN in globals */
 global gradient_usa 0.46
 global gradient_den 0.30

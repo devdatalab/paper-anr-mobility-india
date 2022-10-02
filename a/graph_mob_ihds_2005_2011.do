@@ -26,7 +26,7 @@ forval group = 0/4 {
   foreach bc in $bc_list {
     di "`bc'-`group'"
     count if group == `group' & bc == `bc'
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu50-2005,rank,father,son,`group')
   }
 }

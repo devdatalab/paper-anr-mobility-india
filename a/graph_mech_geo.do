@@ -30,26 +30,26 @@ app $f, s(lb,ub,group,type)
 
 /* for each type, get national mu-0-50, and subset for each group */
 disp_nice "unadjusted"
-bound_mobility [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+bound_param [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
 app $f, s("`r(mu_lb)',`r(mu_ub)',0,unadjusted")
 forval g = 1/4 {
-  bound_mobility [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+  bound_param [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
   app $f, s("`r(mu_lb)',`r(mu_ub)',`g',unadjusted")
 }
 
 disp_nice "state f.e. residuals"
-bound_mobility [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_sresid)  forcemono
+bound_param [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_sresid)  forcemono
 app $f, s("`r(mu_lb)',`r(mu_ub)',0,state-resid")
 forval g = 1/4 {
-  bound_mobility [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_sresid) forcemono
+  bound_param [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_sresid) forcemono
   app $f, s("`r(mu_lb)',`r(mu_ub)',`g',state-resid")
 }
 
 disp_nice "district f.e. residuals"
-bound_mobility [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_dresid) forcemono
+bound_param [aw=wt] , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_dresid) forcemono
 app $f, s("`r(mu_lb)',`r(mu_ub)',0,dist-resid")
 forval g = 1/4 {
-  bound_mobility [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_dresid) forcemono
+  bound_param [aw=wt] if group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank_dresid) forcemono
   app $f, s("`r(mu_lb)',`r(mu_ub)',`g',dist-resid")
 }
 

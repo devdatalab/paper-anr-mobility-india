@@ -4,7 +4,7 @@
 /*********************************/
 use $mobility/ihds/ihds_mobility, clear
 keep if male == 1 & bc == 1960 & !mi(father_ed_rank_s)
-bound_mobility [aw=wt], s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank)
+bound_param [aw=wt], s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank)
 
 collapse (mean) son_ed_rank [aw=wt], by(father_ed_rank_s)
 get_rank_cuts_from_rank_means father_ed_rank_s, gen_xcut(bin) gen_xsize(binsize) 

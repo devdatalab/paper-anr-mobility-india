@@ -42,27 +42,27 @@ foreach bc in $bc_list {
   forval group = 1/4 {
 
     /* calculate mobility, y = ed_rank, entire birth cohort ranks */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu50-across,son,`group')
   
     /* calculate mobility, y = ed_rank, within-bc-subgroup ranks */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu50-within,son,`group')
 
     /* repeat for mu-0-60 */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(60) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(60) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu60-across,son,`group')
   
     /* calculate mobility, y = ed_rank, within-bc-subgroup ranks */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(60) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(60) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu60-within,son,`group')
     
     /* repeat for mu-0-70 */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(70) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(70) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu70-across,son,`group')
   
     /* calculate mobility, y = ed_rank, within-bc-subgroup ranks */
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(70) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(70) xvar(father_ed_rank_within) yvar(son_ed_rank) forcemono qui
     append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',mu70-within,son,`group')
   }
 }

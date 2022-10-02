@@ -4,6 +4,7 @@
 
 /*************************************************************/
 /* Calculate mus using granular ed data instead of downcoded */
+/* - focus is on content of Table 2                          */
 /*************************************************************/
 
 /* open IHDS dataset with matched parent/children  */
@@ -43,7 +44,7 @@ append_to_file using $f, s(lb, ub, bc, mu, y, parent, sex, group)
 foreach bc in 1960 1980 {
 
   /* loop over upward/downward mob.
-     p notation is shorthand -- these aren't chetty et al's ps.
+     p notation is shorthand -- these aren't chetty's ps.
      p25->mu-0-50. p75->mu-50-100. p40->mu-0-80 */
   foreach p in 25 {
     local s = `p' - 25
@@ -62,7 +63,7 @@ foreach bc in 1960 1980 {
         forval group = 0/4 {
 
           /* calculate mobility, y = ed_rank */
-          bound_mobility [aw=wt] if bc == `bc' & group == `group', s(`s') t(`t') xvar(`parent'_ed_rank_`csex') yvar(`csex`csex''_ed_rank) forcemono qui
+          bound_param [aw=wt] if bc == `bc' & group == `group', s(`s') t(`t') xvar(`parent'_ed_rank_`csex') yvar(`csex`csex''_ed_rank) forcemono qui
           append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p`p',rank,`parent',`csex`csex'',`group')
         }
       }
@@ -115,10 +116,10 @@ drop new
 forv group = 0/4 {
   foreach bc in 1960 1980 {
 
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     insert_into_file using $out/interm/binned_mob.csv, key(g`group'_`bc'_lb) value(`r(mu_lb)') format(%9.1f)        
 
-    bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
+    bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono qui
     insert_into_file using $out/interm/binned_mob.csv, key(g`group'_`bc'_ub) value(`r(mu_ub)') format(%9.1f)        
     
   }

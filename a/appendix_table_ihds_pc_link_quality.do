@@ -30,7 +30,6 @@ drop *granular
 /* creates measures of mismatch from roster vs. hh for men */
 gen men_mismatch = father_ed_roster != father_ed_hh if !mi(father_ed_roster) & !mi(father_ed_hh) & male == 1
 gen men_mismatch_quantity = father_ed_hh - father_ed_roster if male == 1
-/* note we only do fathers, since mothers */
 
 /* for women, key comparison is EW vs. roster */
 gen wf_mismatch = father_ed_roster != father_ed_ew if !mi(father_ed_roster) & !mi(father_ed_ew) & male == 0

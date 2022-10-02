@@ -97,3 +97,40 @@ twoway (rarea high low xvar if xvar < 50 & bc == 1111, color(ltblue)) ///
           legend(order( 2 3 4 5 ) lab(2 "1960s Birth Cohort") lab(3 "1980s Birth Cohort") ))
 graphout mob_ihds_shading
 
+
+/*******************/
+/* women's moments */
+/*******************/
+use $mobility/ihds/ihds_mobility.dta, clear
+collapse (firstnm) father_ed (mean) daughter_ed_rank daughter_prim daughter_hs daughter_uni [aw=wt], by(father_ed_rank_d bc)
+
+/* drop 1950s birth cohort with no data */
+drop if bc == 1950
+
+/* plot 1960 and 1985 */
+foreach y in 1960 1970 1975 1980 1985 {
+  scatter daughter_ed_rank father_ed_rank_d if bc == `y', xlabel(0(20)100) ylabel(0(20)100) name(f`y', replace)
+  graphout moments_f`y'
+}
+
+/* plot them all on one graph */
+twoway ///
+    (scatter daughter_ed_rank father_ed_rank_d if bc == 1960, color("0 0 0"))   ///
+    (scatter daughter_ed_rank father_ed_rank_d if bc == 1970, color("50 0 0"))  ///
+    (scatter daughter_ed_rank father_ed_rank_d if bc == 1975, color("100 0 0")) ///
+    (scatter daughter_ed_rank father_ed_rank_d if bc == 1980, color("150 0 0")) ///
+    (scatter daughter_ed_rank father_ed_rank_d if bc == 1985, color("200 0 0")) ///
+    , xlabel(0(20)100) ylabel(0(20)100)
+graphout moments_f
+
+/* try it with lines */
+twoway ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 0, )  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 2, )  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 5, )  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 8, )  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 10,)  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 12,)  ///
+    (line daughter_ed_rank father_ed_rank_d if father_ed == 14,)  ///
+    , xlabel(0(20)100) ylabel(0(20)100)
+graphout moments_f_lines

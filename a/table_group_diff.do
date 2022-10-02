@@ -48,11 +48,11 @@ foreach child in $childlist {
       
       /* first get the "true" set */
       use $mobility/ihds/ihds_mobility, clear 
-      bound_mobility [aw=wt] if bc == 1980 & group == `group1', s(``outcome'low') t(``outcome'high') xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
+      bound_param [aw=wt] if bc == 1980 & group == `group1', s(``outcome'low') t(``outcome'high') xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
       local lb_group1 = `r(mu_lb)'
       local ub_group1 = `r(mu_ub)'
 
-      bound_mobility [aw=wt] if bc == 1980 & group == `group2', s(``outcome'low') t(``outcome'high') xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
+      bound_param [aw=wt] if bc == 1980 & group == `group2', s(``outcome'low') t(``outcome'high') xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
       local lb_group2 = `r(mu_lb)'
       local ub_group2 = `r(mu_ub)'
       

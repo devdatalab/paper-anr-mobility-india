@@ -19,7 +19,7 @@ collapse (mean) has_father_in_hh [aw=wt], by(male age)
 twoway ///
     (scatter has_father_in_hh age if male == 0) ///
     (scatter has_father_in_hh age if male == 1, msymbol(X)) ///
-    , legend(rows(2) region(lcolor(gs3)) ring(0) pos(2) lab(1 "Daughters") lab(2 "Sons")) xline(20 23) ytitle("% Has Father in Household") xtitle("Age")
+    , legend(rows(2) region(lcolor(gs3)) ring(0) pos(2) lab(1 "Daughters") lab(2 "Sons")) ytitle("% Has Father in Household") xtitle("Age")
 
 graphout cores_age, pdf
 
@@ -69,13 +69,13 @@ forval age = 15/58 {
   qui foreach cores in 0 1 {
     count if sample == 1 & cores_only == `cores' & !mi(daughter_ed_rank) & !mi(father_ed_rank)
     if `r(N)' > 20 {    
-      qui bound_mobility [aw=wt] if sample == 1 & cores_only == `cores', s(0) t(50) xvar(father_ed_rank) yvar(daughter_ed_rank) forcemono
+      qui bound_param [aw=wt] if sample == 1 & cores_only == `cores', s(0) t(50) xvar(father_ed_rank) yvar(daughter_ed_rank) forcemono
       replace mu_ub = `r(mu_ub)' if age == `age' & cores_only == `cores' & male == 0
       replace mu_lb = `r(mu_lb)' if age == `age' & cores_only == `cores' & male == 0
     }
 
     count if sample == 1 & cores_only == `cores' & !mi(son_ed_rank) & !mi(father_ed_rank)
-    qui bound_mobility [aw=wt] if sample == 1 & cores_only == `cores', s(0) t(50) xvar(father_ed_rank) yvar(son_ed_rank) forcemono
+    qui bound_param [aw=wt] if sample == 1 & cores_only == `cores', s(0) t(50) xvar(father_ed_rank) yvar(son_ed_rank) forcemono
     replace mu_ub = `r(mu_ub)' if age == `age' & cores_only == `cores' & male == 1
     replace mu_lb = `r(mu_lb)' if age == `age' & cores_only == `cores' & male == 1
   }
@@ -99,11 +99,32 @@ gen bias_ub = max(mu_lb1, mu_ub1) - min(mu_lb0, mu_ub0)
 twoway rarea bias_lb bias_ub age if male == 1, color(gs12) lcolor(black) /// 
     ytitle("Coresidence Bias on Upward Mobility (Ranks)", size(medlarge)) ///
     xtitle("Age at Time of Survey", size(medlarge))  ///
-    ylabel(0(5)15, labsize(medium)) xlabel(15(5)30, labsize(medium)) xline(20 23) yline(0)
+    ylabel(0(5)15, labsize(medium)) xlabel(15(5)30, labsize(medium)) yline(0)
 graphout cores_bias_upward_m, pdf
 
 twoway rarea bias_lb bias_ub age if male == 0, color(gs12) lcolor(black) /// 
     ytitle("Coresidence Bias on Upward Mobility (Ranks)", size(medlarge)) ///
     xtitle("Age at Time of Survey", size(medlarge))  ///
-    ylabel(0(5)15, labsize(medium)) xlabel(15(5)30, labsize(medium)) xline(20 23) yline(0)
+    ylabel(0(5)15, labsize(medium)) xlabel(15(5)30, labsize(medium)) yline(0)
 graphout cores_bias_upward_f, pdf
+
+/************************/
+/* graph cores by group */
+/************************/
+
+/* follow same build steps as above */
+use $ihds/ihds_2011_members, clear
+keep if age < 60
+drop if mi(has_father_in_hh)
+
+/* collapse by age / group */
+collapse (mean) has_father_in_hh [aw=wt], by(male age group)
+
+/* first plot the men */
+twoway ///
+    (scatter has_father_in_hh age if male == 1 & group == 1) ///
+    (scatter has_father_in_hh age if male == 1 & group == 2, msymbol(X)) ///
+    (scatter has_father_in_hh age if male == 1 & group == 3, msymbol(T)) ///
+    (scatter has_father_in_hh age if male == 1 & group == 4, msymbol(S)) ///
+    , legend(region(lcolor(gs3)) ring(0) pos(2) lab(1 "Forward/Other") lab(2 "Muslim") lab(3 "SC") lab(4 "ST")) ytitle("% Has Father in Household") xtitle("Age")
+graphout cores_by_group, pdf
