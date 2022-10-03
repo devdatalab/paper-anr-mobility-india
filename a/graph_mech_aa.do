@@ -177,7 +177,7 @@ text(26 1960 "Late SC Groups", color(black))
 graphout jati_cohort_mob,  pdf 
 
 /* outsheet CSV to reproduce graph */
-export delimited ub lb cohort sc_group using $tmp/mob/aa.csv, replace
+export delimited ub lb cohort sc_group using $tmp/aa.csv, replace
 
 /***************************************************************/
 /* robustness of AA regression results by different post years */

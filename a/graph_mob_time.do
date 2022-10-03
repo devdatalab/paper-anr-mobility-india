@@ -52,7 +52,7 @@ graphout ihds_mob_time_fd, pdf
 export delimited mu y sex bc_mid lb ub if parent == "father" & ///
     ((mu == "p25" & inlist(y, "rank", "hs")) | ///
      (mu == "p75" & y == "hs")) ///
-    using $tmp/mob/mob-all-groups.csv, replace
+    using $tmp/mob-all-groups.csv, replace
 
 /* Mother-Son and Mother-Daughter -- uninformative graph for appendix  */
 graph_mob, name(ihds_mob_time_ms) mu(p25) sex(son) parent(mother) ///

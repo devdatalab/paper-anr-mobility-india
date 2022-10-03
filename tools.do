@@ -407,7 +407,22 @@ pr def graphout
   graph export $out/`1'.pdf, replace
 end
 
+cap pr drop store_tex_constant
+pr def store_tex_constant
+  // placeholder for doing nothing
+  local x = 1
+end
 
+cap pr drop get_ecol_header_string
+pr def get_ecol_header_string
+  // placeholder for doing nothing
+  local x = 1
+end
+cap pr drop stc
+pr def stc
+  // placeholder for doing nothing
+  local x = 1
+end
   /**********************************************************************************/
   /* program append_est_to_file : Appends a regression estimate to a csv file       */
   /**********************************************************************************/
@@ -438,3 +453,14 @@ end
   /* *********** END program append_est_to_file ***************************************** */
 
 
+  /**********************************************************************************/
+  /* program drep : report duplicates                                               */
+  /**********************************************************************************/
+  cap prog drop drep
+  prog def drep
+  {
+    syntax [varlist] [if]
+    duplicates report `varlist' `if'
+  }
+  end
+  /* *********** END program drep ************************************************** */

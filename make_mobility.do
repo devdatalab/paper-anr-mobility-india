@@ -33,6 +33,9 @@ do $mobcode/b/prep_us_mobility.do
 /* Calculate bounds on all mobility stats  */
 do $mobcode/b/calc_ihds_mus.do
 
+/* export father-son mobility moments for Matlab */
+do $mobcode/b/create_matlab_moments.do
+
 /************/
 /* ANALYSIS */
 /************/
@@ -153,16 +156,10 @@ do $mobcode/a/stats_churn.do
 /* Table A3 */
 do $mobcode/a/stats_bottom_half.do
 
-/* MISSING: Table A1 */
-
-
 /*******************/
 /* Matlab analyses */
 /*******************/
 if "$fast" == "1" exit
-
-/* export father-son mobility moments for Matlab */
-do $mobcode/b/create_matlab_moments.do
 
 /* Use matlab to calculate curvature-constrained mus and gradients */
 shell matlab -nosplash -nodesktop -r '$mobcode/a/matlab/calc_all_mob_stats; exit;'

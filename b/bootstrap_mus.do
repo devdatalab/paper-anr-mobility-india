@@ -24,6 +24,7 @@ cap prog define gen_bootstrap_mus
 
 syntax, bcs(string) name(string) sample(string) [bs(int 5)] 
 
+cap mkdir $mobility/bootstrap_bounds
 global f $mobility/bootstrap_bounds/`name'_`bs'.csv
 cap erase $f
 append_to_file using $f, s(lb, ub, bc, mu, y, parent, sex, group, bootstrap)

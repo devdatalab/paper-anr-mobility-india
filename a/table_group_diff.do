@@ -8,6 +8,7 @@ cap !rm -f $out/interm/group_diff.csv
 /* set parameters for loop below */
 global childlist son daughter
 global ylist p25 p75
+global bs 1000
 
 /* set group lists for:
     1. FWD - SC

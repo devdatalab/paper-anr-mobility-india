@@ -25,9 +25,9 @@ cap mkdir $tmp
 cap mkdir $mobility
 
 /* load Stata programs */
-qui do tools.do
 qui do masala-merge/masala_merge
 qui do stata-tex/stata-tex
+qui do tools.do
 
 /* add ado folder to adopath */
 adopath + ado

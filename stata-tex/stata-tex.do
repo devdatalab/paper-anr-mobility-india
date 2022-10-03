@@ -161,12 +161,17 @@ end
 cap prog drop append_to_file
 prog def append_to_file
 {
-  syntax using/, String(string)
+  syntax using/, String(string) [format(string) erase]
 
-  cap file close fh
-  file open fh using `using', write append
-  file write fh  `"`string'"'  _n
-  file close fh 
+  tempname fh
+  
+  cap file close `fh'
+
+  if !mi("`erase'") cap erase `using'
+
+  file open `fh' using `using', write append
+  file write `fh'  `"`string'"'  _n
+  file close `fh'
 }
 end
 /* *********** END program append_to_file ***************************************** */

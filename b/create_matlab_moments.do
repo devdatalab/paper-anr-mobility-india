@@ -39,6 +39,7 @@ label drop group
 order group bc father_ed_rank
 sort group bc father_ed_rank
 drep group bc father_ed_rank
+cap mkdir $mobility/moments
 outsheet using $mobility/moments/ed_ranks_all.csv, comma replace
 
 /* store separate CSVs for the different 10-year birth cohorts and subgroups */

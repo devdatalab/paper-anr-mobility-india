@@ -1131,4 +1131,233 @@ qui {
   }
   end
   /* *********** END program group ***************************************** */
+
+/* NOTE: bound_param is nearly identical to bound_mobility; it is better to use bound_mobility,
+         but bound_param is used by some of our older code. */
+  /**********************************************************************************/
+  /* program bound_param : generate analytical bounds on mu or p */ 
+  /* s: lower bound */
+  /* t: upper bound */
+  /* if s = t, then this returns the bounds on p_s = p_t  */
+
+  /* sample use:
+  // calculate p25
+  bound_param [aw pw] [if], xvar(father_ed_rank) yvar(son_ed_rank_decade) s(25) t(25) [by(birth_cohort)]
+  
+  // calculate mu50
+  bound_param [aw pw] [if], xvar(father_ed_rank) yvar(son_ed_rank_decade) s(0) t(50) [by(birth_cohort)]
+  */
+  
+  /***********************************************************************************/
+  capture prog drop bound_param 
+  prog def bound_param, rclass
+    
+    syntax [aweight pweight] [if], xvar(string) yvar(string) [s(real 0) t(real 50) maxmom(real 100) minmom(real 0) append(string) str(string) forcemono QUIet verbose] 
+
+    preserve
+
+    qui {
+
+      /* keep if if */
+      if !mi("`if'") {
+        keep `if'
+        local ifstring "`if'"
+      }
+
+      /* only use "noi" if verbose is specified */
+      if !mi("`verbose'") {
+        local noi noisily
+      }
+      
+      /* require non-missing xvar and yvar */
+      count if mi(`xvar') | mi(`yvar')
+      if `r(N)' > 0  & ("`verbose'" != "") {
+        `noi' disp "Warning: ignoring `r(N)' rows that are missing `xvar' or `yvar'."
+      }
+      keep if !mi(`xvar') & !mi(`yvar')
+
+      /* fail with an error message if there's no data left */
+      qui count
+      if `r(N)' < 2 {
+        disp as error "bound_param: Only `r(N)' observations left in sample; cannot bound anything."
+        error 456
+      }
+      
+      // Create convenient weight local
+      if ("`weight'" != "") {
+        local wt [`weight'`exp']
+        local longweight = "weight(" + substr("`exp'", 2, .) + ")"
+      }
+
+      /* if not monotonic */
+      is_monotonic, x(`xvar') y(`yvar') `longweight'
+      if `r(is_monotonic)' == 0 {
+
+        /* combine bins to force monotonicity if requested */
+        if !mi("`forcemono'") {
+          `noi' make_monotonic, x(`xvar') y(`yvar') `longweight' preserve_ranks
+          make_monotonic, x(`xvar') y(`yvar') `longweight' preserve_ranks
+        }
+
+        /* otherwise fail */
+        else {
+          display as error "ERROR: bound_param cannot estimate mu with non-monotonic moments"
+          local FAILED 1
+        }
+      }
+      
+      /* sort by the x variable */
+      sort `xvar'
+      
+      /* collapse on xvar [does nothing if data is already collapsed] */
+      collapse (mean) `yvar' `wt' , by(`xvar')
+      
+      /* rename variables for convenience */
+      ren `yvar' y_moment
+      ren `xvar' x_moment
+
+      /************************************************/
+      /* STEP 1: get moments/cuts  */
+      /************************************************/
+
+      /* obtain the cuts from the midpoints */
+      sort x_moment
+      gen xcuts = x_moment[1] * 2 if _n == 1
+      local n = _N
+      
+      forv i = 2/`n' {
+        replace xcuts = (x_moment - xcuts[_n-1]) * 2 + xcuts[_n-1] if _n == `i' 
+      }
+      replace xcuts = 100 if _n == _N 
+      
+      /**************************************************/
+      /* STEP 2: CONVERT PARAMETERS TO LOCALS */
+      /**************************************************/
+      /* obtain important parameters and put into locals */
+      forv i = 1/`n' {
+        
+        local y_moment_next_`i' = y_moment[`i'+1]
+        local y_moment_prior_`i' = y_moment[`i'-1]
+        local y_moment_`i' = y_moment[`i']
+        local x_moment_`i' = x_moment[`i']
+        local min_bin_`i' = xcuts[`i'-1]
+        local max_bin_`i' = xcuts[`i']
+        
+        local min_bin_1 = 0 
+        local max_bin_`n' = 100 
+        local y_moment_prior_1 = `minmom' 
+        local y_moment_next_`n' = `maxmom' 
+        
+        /* get the star for each bin */
+        local star_bin_`i' = (`y_moment_next_`i'' * `max_bin_`i'' - (`max_bin_`i'' - `min_bin_`i'') * `y_moment_`i'' - `min_bin_`i'' * `y_moment_prior_`i'' ) / ( `y_moment_next_`i'' - `y_moment_prior_`i'' )
+        
+        /* close loop over bins */
+        
+      }
+      
+      /* determine the bin that s and t are in */
+      forv i = 1/`n' {
+        
+        if `min_bin_`i'' <= `t' & `max_bin_`i'' >= `t' { 
+          local bin_t = `i'
+        }
+        
+        if `min_bin_`i'' <= `s' & `max_bin_`i'' >= `s' { 
+          local bin_s = `i'
+        }
+        
+      }    
+      
+      /* make everything easier to reference by dropping the end index */
+      foreach variable in min_bin max_bin y_moment_prior y_moment_next y_moment x_moment star_bin {
+        local `variable'_t = ``variable'_`bin_t''
+        local `variable'_s = ``variable'_`bin_s''
+      }
+      
+      /***************************/
+      /* STEP 3: GET THE BOUNDS  */
+      /***************************/
+      
+      /* get the analytical lower bound */
+      if (`t' < `star_bin_t') local analytical_lower_bound_t = `y_moment_prior_t' 
+      if (`t' >= `star_bin_t') local analytical_lower_bound_t = 1/(`t' - `min_bin_t') * ( (`max_bin_t' - `min_bin_t') * `y_moment_t' - (`max_bin_t' - `t') * `y_moment_next_t' )
+      
+      /* get the analytical upper bound */
+      if (`s' < `star_bin_s') local analytical_upper_bound_s = 1/(`max_bin_s' - `s') * ((`max_bin_s' - `min_bin_s' )* `y_moment_s' - (`s' - `min_bin_s') * `y_moment_prior_s' )
+      if (`s' >= `star_bin_s') local analytical_upper_bound_s = `y_moment_next_s'
+      
+      /* if the t value is not in the same bin as s, average the determined value of the moments in prior bins, plus the analytical
+      lower bound times the proportion of mu_0^t it constitutes */
+      if `bin_t' != `bin_s' {
+        
+        local bin_t_minus_1 = `bin_t' - 1
+        local bin_s_plus_1 = `bin_s' + 1
+        
+        /* add the determined portion, mu_prime, only if there is a full bin in between s and t  */      
+        if `bin_t' - `bin_s' >= 2 {
+          local mu_prime = 0 
+          /* obtain the weighted value of the moments between s and t  */  
+          forv i = `bin_s_plus_1'/`bin_t_minus_1' {
+            local bin_size_`i' = `max_bin_`i'' - `min_bin_`i''         
+            local wt =  `bin_size_`i'' / (`t' - `s') * `y_moment_`i'' 
+            local mu_prime = `mu_prime' + `wt'
+          }
+        }      
+        else {
+          local mu_prime = 0
+        }
+        di "`mu_prime'" 
+        /* put this together with the determined portion of the parameter */  
+        local lb_mu_s_t = `mu_prime' + (`t' - max(`max_bin_`bin_t_minus_1'',`s') ) / (`t' - `s') * `analytical_lower_bound_t' + (`max_bin_s' - `s') / (`t' - `s') * `y_moment_s' * (`bin_s' != `bin_t') 
+        local ub_mu_s_t = `mu_prime' + (`t' - `max_bin_`bin_t_minus_1'' ) / (`t' - `s') * `y_moment_t' * (`bin_s' != `bin_t') + (min(`max_bin_s',`t') - `s') / (`t' - `s') * `analytical_upper_bound_s' 
+      }
+      
+      /* if the t IS in the same interval as s, the bounds are simpler to compute: just take the analytical lower bound of t, or the analytical upper bound of s */
+      if `bin_t' == `bin_s' {
+        local lb_mu_s_t = `analytical_lower_bound_t'
+        local ub_mu_s_t = `analytical_upper_bound_s'
+      }
+      
+      /* return the locals that are desired */
+      if "`FAILED'" != "1" {
+        return local t = `t'
+        return local s = `s'
+        return local mu_lower_bound = `lb_mu_s_t'
+        return local mu_upper_bound = `ub_mu_s_t'                     
+        return local mu_lb = `lb_mu_s_t'
+        return local mu_ub = `ub_mu_s_t'                     
+        return local star_bin_s = `star_bin_s'
+        return local star_bin_t = `star_bin_t'    
+        return local num_moms = _N
+      }
+    }
+
+    if "`FAILED'" != "1" {
+      local rd_lb_mu_s_t: di %6.3f `lb_mu_s_t'
+      local rd_ub_mu_s_t: di %6.3f `ub_mu_s_t'
+
+      if mi("`quiet'") {      
+        di `" Mean `yvar' in(`s', `t') is in [`rd_lb_mu_s_t', `rd_ub_mu_s_t'] "'   
+      }
+      
+      if !mi("`append'") {
+        append_to_file using `append', s(`str',`rd_lb_mu_s_t', `rd_ub_mu_s_t')
+      }
+    }
+    else {
+      return local t = `t'
+      return local s = `s'
+      return local mu_lower_bound = .
+      return local mu_upper_bound = .
+      return local mu_lb = .
+      return local mu_ub = .
+      return local star_bin_s = .
+      return local star_bin_t = .
+      return local num_moms = _N
+    }
+    /* close program */
+    restore
+  end
+  /* *********** END program bound_param ***************************************** */
+
 }

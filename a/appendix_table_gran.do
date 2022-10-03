@@ -79,6 +79,7 @@ foreach bc in 1960 1980 {
 /* PANEL: granular  */
 /********************/
 /* extract mus from calc mu bounds to put into template  */
+cap mkdir $out/interm
 import delimited using $f, clear
 forv group = 0/4 {
   foreach bc in 1960 1980 {

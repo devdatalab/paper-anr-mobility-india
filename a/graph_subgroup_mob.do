@@ -28,7 +28,7 @@ twoway ///
 graphout ihds_mob_group_time_p25_m, pdf
 
 export delimited group mu y sex bc_mid lb ub if parent == "father" & y == "rank" & mu == "p25" ///
-    using $tmp/mob/mob-subgroups.csv, replace
+    using $tmp/mob-subgroups.csv, replace
 
 /* graph output: expected son education rank vs. birth cohort for p75 for each of the four subgroups */
 twoway ///
