@@ -118,29 +118,16 @@ following steps:
      replication data package.
    * intermediate files will be placed in both `$tmp` and `$mobility`.
 
-4. Open `matlab/set_basepaths.m` and set `base_path` to the same path as `$mdata`.
+4. FIXFIX Open `matlab/set_basepaths.m` and set `base_path` to the same path as `$mobility`.
 
-5. Open `a/graph_intuitive.py` and set `output_path` to `$mdata/out` in line 10.
-
-**NOTE:** The code probably won't work if you have spaces in the pathnames. Blame StataCorp, not us.
-
-6. Run the do file `make_nra_mortality.do`.  This will run through all the
-   other do files to regenerate all of the results in `$out/`.
+5. Run the do file `make_mobility.do`.  This will run through all the
+   other do files to regenerate all of the results in `$out/`. The do file runs matlab from shell commands in several locations. Your local machine may need additional configuration to be able to run Matlab from Stata. Alternatively, you can run these Matlab programs separately when you get there.
    
 ## Replication Notes
 
-This paper uses restricted NCHS data, because it requires the education of the deceased, which was not reported in public NCHS files beginning around 2005. These restricted data cannot be included in the replication package. Therefore, the makefile comments out `make_mortality_data.do`, which constructs the NCHS + ACS + CPS national aggregates which form the basis of the analysis. However, `make_mortality_data.do` and its subcomponents are provided for anyone with access to the restricted access data. The outputs of this code appear in `$mdata/mort` (and are provided). We have permission from NCHS to post national mortality aggregates constructed from the microdata.
+To compile `mobility_paper.tex`, You may need to change `\mobilitypath` in `mobility_paper.tex` to an absolute path. The relative path to `exhibits/` seems to work on some Latex compilers and not others.
 
-Restricted mortality microdata is available from the NCHS. ACS and CPS data are available from the U.S. Census.
-
-The Matlab bound-generating code (`run_matlab_solver.do`) was run in parallel across 45 processes on a research server, each process taking about 6 hours. As such, we have configured the code to generate bounds only for one age/race group (age 25, white), which are saved in `$mdata/bounds/int/`. The analysis draws all of its code from `$mdata/bounds/`, which has the complete set of bounds. Note that the Matlab bound-generating code is based on a 100-parameter numerical minimization problem which can have local minima, and thus may produce marginally different results in different versions of Matlab or on servers with different memory or default parameters. As such, the bounds generated in `bounds/int` may differ slightly from those in `bounds/`. We do not expect any substantive differences that would affect any of the conclusions of the paper.
-
-You might need to change `\mortalitypath` in `mortality.tex` to an absolute path. The relative path to `exhibits/` works for some of us and not for others.
-
-This code was tested using Stata 16.0 and Matlab R2019a. Estimated run times on our server are:
-* NCHS build and pre-Matlab build: 2 hours
-* Matlab bound generation: 6 hours * 45 parallel processes
-* `make_results.do`: 1 hour
+This code was tested using Stata 16.0 and Matlab R2019a. The estimated run time on our server is about 4 hours (the last 2 for the Matlab component).
 
 The mapping of results output names to tables and figures is as follows:
 
@@ -181,17 +168,6 @@ Figure 1
 
 ## System Requirements
 
-This code relies on Unix (Linux or Mac) Stata/Matlab, and on Python 3.2.
+This code relies on Unix (Linux or Mac) Stata 16 and Matlab 2019 or newer.
 
-
---- old stuff ---
-
-The stata program `make_mobility.do` will run the entire data build and analysis. The dofiles for the build are in `b/` (not there yet) and for analysis in `a/`. The following globals need to be set for the code to run:
-
-| global    | description                       |
-|-----------|-----------------------------------|
-| `$out`      | path for output graphs and tables |
-| `$mobcode`  | path to root folder of this repo  |
-| `$mobility` | root data folder                  |
-| `$bs`       | Number of bootstraps (try 1000)   |
 
