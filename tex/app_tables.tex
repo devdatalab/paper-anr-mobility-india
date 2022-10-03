@@ -1,0 +1,164 @@
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Transition matrices  %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+  \thisfloatpagestyle{empty}
+  \caption{Transition Matrices for Father and Son Education in India}
+\vspace{-.5cm}
+  \label{tab:trans_matrices}
+        {\scriptsize
+
+          \begin{center}
+            \textbf{A. Sons Born 1950-59} 
+          \end{center}
+
+          \begin{center}
+            \begin{tabular}{c |c c c c c c c}
+              \hline
+              \hline
+              & \multicolumn{7}{c}{Son highest education attained} \\
+              \tiny \input{\mobilitypath/firstrow_1950_tm_full} 
+              \hline
+              \tiny \input{\mobilitypath/1950_tm_full} 
+              \hline 
+
+
+            \end{tabular}
+          \end{center}
+
+
+          \begin{center}
+            \textbf{B. Sons Born 1960-69} 
+
+          \end{center}
+
+          \begin{center}
+            \begin{tabular}{c |c c c c c c c}
+
+              \hline
+              \hline
+              & \multicolumn{7}{c}{Son highest education attained} \\
+              \tiny \input{\mobilitypath/firstrow_1960_tm_full} 
+              \hline
+              \tiny \input{\mobilitypath/1960_tm_full} 
+              \hline 
+            \end{tabular}
+          \end{center}
+
+          \begin{center}
+            \textbf{C. Sons Born 1970-79} 
+          \end{center}
+
+          \begin{center}
+            \begin{tabular}{c |c c c c c c c}
+
+              \hline
+              \hline
+              & \multicolumn{7}{c}{Son highest education attained} \\
+              \tiny \input{\mobilitypath/firstrow_1970_tm_full} 
+              \hline
+              \tiny \input{\mobilitypath/1970_tm_full} 
+              \hline 
+            \end{tabular}
+          \end{center}
+
+          \begin{center}
+            \textbf{D. Sons Born 1980-89} 
+          \end{center}
+
+          \begin{center}
+            \begin{tabular}{c | c c c c c c c}
+              \hline
+              \hline
+              & \multicolumn{7}{c}{Son highest education attained} \\
+              \tiny \input{\mobilitypath/firstrow_1980_tm_full} 
+              \hline
+              \tiny \input{\mobilitypath/1980_tm_full} 
+              \hline 
+            \end{tabular}
+          \end{center}
+        }
+\vspace{-.4cm} 
+        \footnotesize{Table \ref{tab:trans_matrices} shows transition matrices by decadal birth
+        cohort for Indian fathers and sons. These data are visualized in Figure~\ref{fig:rank_scatters} for all father/mother-son/daughter dyads.  Source: IHDS (2012).}
+
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% CONSISTENCY OF ED MEASUREMENT %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+  \caption{Internal Consistency of Reports of Parents' Education}
+  \label{tab:validate_eds}
+  \input{\mobilitypath/app_table_validate_eds}
+
+    \footnotesize{Table~\ref{tab:validate_eds} shows measures of
+      internal consistency when there are multiple reports of an
+      individual's father in the IHDS. We calculate the difference between a person's report of their parent's education and the parent's own reporting of it when in the same household. We then regress this difference on a constant (which provides the average difference, in Columns 1, 3, and 5), and on a series of household characteristics (Columns 2, 4, and 6). Source: IHDS (2012).}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+%% Stats About People in the Bottom Half %%
+%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
+\begin{landscape}
+\begin{table}[H]
+  \caption{Characteristics of Top and Bottom Half Individuals and Households}
+  \label{tab:bottom_half_stats}
+  \begin{center}
+  \small \input{\mobilitypath/bottom_half_stats}
+  \end{center}
+
+  \footnotesize{Table~\ref{tab:bottom_half_stats} shows summary statistics describing individuals from the bottom and top half of the education distribution, respectively. The individual statistics describe men born in 1983--92, and in 1953--62. The household statistics describe the households where those men reside. Standard deviations are in parentheses.}
+
+\end{table}
+\end{landscape}
+
+%%%%%%%%%%%%%%%%%%%%
+%% Granular bins  %%
+%%%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+  \caption{Bottom Half Mobility Calculated Using Binned vs. Granular Education}
+  \label{tab:gran}
+\begin{center}
+Panel A: Binned Education
+\end{center}
+\begin{center}
+  \input{\mobilitypath/table_gran_binned}
+\end{center}
+\begin{center}
+Panel B: Granular Education
+\end{center}
+\begin{center}
+  \input{\mobilitypath/table_gran}
+\end{center}
+\footnotesize{Table~\ref{tab:gran} compares national
+  and subgroup bottom half mobility when calculated using IHDS
+  data downcoded to match standard education categories (Panel A, identical to Table~\ref{tab:mob_changes}) and using IHDS data with
+  unadjusted granular years of education (Panel B). The results are similar because there are few individuals with education levels which were both in the bottom 50\% and needed to be downcoded.}
+\end{table}
+
+
+%%%%%%%%%%%%%%%%%%%%%
+%% FERTILITY TABLE %%
+%%%%%%%%%%%%%%%%%%%%%
+
+\begin{table}[H]
+  \caption{Relationship Between Fertility and Subgroup Upward Mobility}
+  \label{tab:mech_fert}
+  \input{\mobilitypath/mech_fertility}
+  
+  \footnotesize{Table~\ref{tab:mech_fert} shows estimates from
+    regressions of child education rank on social group indicators and
+    an individual's number of siblings, a proxy for mother's
+    fertility. The sample is limited to individuals born in 1985--89
+    to fathers with two or fewer years of education. The outcome
+    variable thus corresponds to $\mu_0^{51}$, a close analog of
+    bottom half mobility ($\mu_0^{50}$). Column 1 shows the estimation
+    without the fertility measure for the full sample. Column 2 limits
+    the data to the set of individuals for whom mother's fertility can
+    be measured, and Column 3 adds the fertility variable. The effect
+    of fertility on subgroup mobility gaps is understood as the change
+    in the subgroup coefficient from Column 2 to Column 3. All
+    regressions control for state fixed effects. Source: IHDS (2012).}
+\end{table}
+

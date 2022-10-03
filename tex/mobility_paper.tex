@@ -23,10 +23,10 @@
 %% DON'T CHANGE ANY OF THESE PATHS. FOR LOCAL COMPILE, EDIT YOUR
 %%                                            ~/include.tex ONLY
 \newcommand{\HOME}{\string~}
-\input{\HOME/include.tex}
 
 % include standard package
-\input{\includepath/front_matter}
+\newcommand{\mobilitypath}{exhibits}
+\input{front_matter}
 \usepackage{geometry} 
 \usepackage{fancyhdr} 
 
@@ -386,7 +386,7 @@ Intergenerational mobility is arguably an important policy objective even in the
 
  {  \singlespace
   \bibliographystyle{aer}
-  \bibliography{\HOME/ddl/tools/tex/master}
+  \bibliography{master}
 }
 
   \newpage

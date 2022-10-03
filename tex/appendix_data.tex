@@ -1,0 +1,55 @@
+
+This section describes the data sources and data construction in
+detail. 
+
+\subsection{IHDS}
+
+The India Human Development Survey (IHDS) is a nationally
+representative survey of 41,554 households, with rounds in 2004--05
+and 2011--12. Definitions of social groups are described in the body
+of the paper. This section focuses on linking parents to children.
+
+The primary module of IHDS records the education of the father of the household
+head. A secondary module, the women's survey, records the education of
+the father and mother of the female respondent, as well as the father
+and mother of her husband if she is married. The women's survey is
+given to one or two women aged 15--49 in each household. Because of
+the upper age restriction on the women's survey, the oldest daughter
+in our sample is born in 1962; we therefore do not have any links from
+mothers or links to daughters for the 1950--59 birth cohort.
+
+Finally, we created additional parent-child links using information
+from the relationship field in the household roster. Specifically, we
+linked the household head to their children and parents. We linked the
+spouse of the household head to their children. We linked
+grandchildren of the household head to the child of the household only
+in cases where there was no possible ambiguity about the parents of
+the grandchildren. In cases with no possible ambiguity, we linked
+nieces/nephews of the household head to brothers of the household
+head. We did not link individuals on the basis of in-law
+relationships, because of the ambiguity in the definition of the
+sibling-in-law (i.e. sibling of spouse vs. spouse of sibling).
+
+In many cases, a parent's education is recorded in multiple ways,
+allowing us to cross-check the validity of the responses.  For
+example, the household head's father's education may be obtained from
+(i) the household roster (if he is coresident); (ii) from the
+household head's response to the father education question; and (iii)
+from his wife's responses to the husband's father's education
+question. The average correlation between parent education measured
+across different sources is 0.9. Appendix Table~\ref{tab:validate_eds}
+shows that the discrepancies between measures are not correlated with
+household characteristics.
+
+\subsection{Data from other countries}
+
+We refer in the paper to mobility data from several other
+countries. Data from Denmark, Sweden, and Norway were generously
+shared with us by \citeasnoun{boserup2014} and
+\citeasnoun{bratberg2017}. Income mobility estimates for the U.S. were
+drawn from \citeasnoun{chetty2014b} and
+\citeasnoun{chetty2018}. Educational mobility estimates from the
+U.S. were calculated from a parent-child education transition matrix
+describing children in the 2005--2015 ACS and parents in the 2000
+Census, from the data package of \citeasnoun{chetty2018}.
+

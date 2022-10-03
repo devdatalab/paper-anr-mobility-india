@@ -1,0 +1,156 @@
+This Appendix provides details about the analytical and numerical
+procedures used to bound the CEF and functions of the CEF. These methods
+are straightforward applications of \citeasnoun{nra2020mort}. In
+Appendix \ref{app:cef_prop} and Appendix \ref{app:mu_prop}, we 
+reproduce the text of several propositions contained in
+\citeasnoun{nra2020mort} for ease of
+reference, but relegate the proofs to \citeasnoun{nra2020mort}. In Appendix
+\ref{app:num_fn}, we explain the simple
+procedure to adapt the numerical techniques in
+\citeasnoun{nra2020mort} to this setting. 
+
+\textbf{Relationship to \citeasnoun{nra2020mort}.} \citeasnoun{nra2020mort} is
+  concerned with estimating bounds on $E(y|x=i)$ and various functions
+  of that CEF, where $x$ is an interval-censored adult education rank
+  and $y$ is that same adult's mortality rate. This paper is concerned
+  with the same mathematical problem, where $x$ is an
+  interval-censored parent education rank and $y$ is a measure of
+  child socioeconomic status. Note that the monotonicity condition
+  here is similar to that in \citeasnoun{nra2020mort}. Here, we
+  assume child status is \textit{increasing} in parent education
+  rank; \citeasnoun{nra2020mort} assumes adult survivalship is
+  \textit{increasing} in adult education rank. 
+
+\subsection{Formal Statement of Proposition 1} 
+\label{app:cef_prop}   
+Let the function $Y(x) = E(y|x)$ be defined on $[0,100]$. Form the set
+of non-overlapping intervals $[x_k, x_{k+1}]$ that cover $[0,100]$ for
+$k \in \{1, \dots, K\}$. We
+seek to bound $E(y|x)$ when
+$x$ is known to lie in the interval $[x_k,x_{k+1}]$; there are $K$
+such intervals. Suppose that 
+\begin{equation}
+x \sim U(0,100),
+  \tag{Assumption U} 
+\end{equation}
+and define $$ r_k \coloneqq \frac{1}{x_{k+1} - x_k} \int_{x_k}^{x_{k+1}}
+Y(x)dx.$$ 
+
+Adopt the following assumptions from \citeasnoun{manski2002}: 
+\begin{align*}
+ \tag{Assumption I} 
+  &\text{Prob}(x \in [x_{k}, x_{k+1}]) = 1. \\
+  \tag{Assumption M}  
+  &E(y|x) \text{ must be weakly increasing in } x. \\ 
+  \tag{Assumption MI} 
+  &E( y \vert x, \ x \text{ is interval censored}) = E(y
+  \vert x). \\
+\end{align*}
+
+\begin{nono-prop} 
+  \nonumber
+  \label{eq:cef_prop}
+  Let $x$ be in bin $k$. Under assumptions M, I, MI \cite{manski2002} and
+  U, and without additional information, the
+  following bounds on $E(y \vert x)$ are sharp:
+  $$
+  \begin{cases}                                                                                                                          %
+    r_{k-1} \leq E(y \vert x) \leq \frac{1}{x_{k+1} - x} \left(
+    \left(x_{k+1} - x_k\right) r_k - \left(x - x_k\right) r_{k-1} \right), & x < x_k^* \\                                                                %
+    \frac{1}{x - x_k} \left( \left(x_{k+1} - x_k\right) r_k -
+    \left(x_{k+1} - x\right) r_{k+1} \right) \leq E(y \vert x) \leq r_{k+1}, & x \geq x_k^*                                                                                                                 %
+  \end{cases}
+  $$
+  where $$x_k^* = \frac{x_{k+1} r_{k+1}
+    - \left(x_{k+1} - x_k\right) r_k -
+    x_k r_{k-1}  }{r_{k+1} - r_{k-1} }.$$  %                                                                                                                                   %                                                                                                                                                                                                                                                                 %    
+\end{nono-prop} 
+
+\subsection{Formal Statement of Analytical Bounds on $\mu_a^b$} 
+\label{app:mu_prop} 
+We now state a proposition, also contained in
+\citeasnoun{nra2020mort}, that permits us to bound $\mu_a^b$. 
+
+Define $$  \mu_a^{b} = \frac{1}{b - a} \int_a^{b} E(y | x) di. $$ Let
+$Y_x^{min}$ and $Y_x^{max}$ be the lower and upper bounds respectively
+on $E(y | x)$ given by Proposition \ref{eq:cef_prop}. 
+We seek to bound $\mu_a^b$ when $x$ is only known to lie in some
+interval $[x_k, x_{k+1}]$. 
+
+\begin{nono-prop} 
+  Let $b \in [x_k, x_{k+1}]$ and $a \in [x_h, x_{h+1}]$ with $a<b$. Let
+  assumptions M, I, MI \cite{manski2002} and U hold. Then, if there is no
+  additional information available, the
+  following bounds are sharp: 
+  \label{eq:bound_mu} 
+$$ 
+  \begin{cases} 
+     Y_b^{min} \leq \mu_a^b \leq Y_a^{max}, & h = k \\
+    \frac{r_h (x_k - a) + Y_b^{min}(b - x_k)}{b-a} \leq
+    \mu_a^b \leq \frac{Y_a^{max} (x_k - a) + r_k
+      (b-x_k)}{b-a}, & h +
+    1 = k \\
+    \frac{r_h (x_{h+1} - a) + \sum_{\lambda = h+1}^{k-1} r_{\lambda}
+      (x_{\lambda+1} - x_{\lambda}) + Y_b^{min}(b - x_k)}{b-a} \leq
+    \mu_a^b 
+    %% \ \ \ \ \ \ \ \ \ \ \ \ %%
+    \leq \frac{Y_a^{max} (x_{h+1} - a) + \sum_{\lambda = h+1}^{k-1} r_{\lambda}
+      (x_{\lambda+1} - x_{\lambda}) + r_k (b-x_k)}{b-a}, & h +
+    1 < k. 
+  \end{cases} 
+$$ 
+\end{nono-prop} 
+
+\subsection{Bounding Functions of the CEF} 
+\label{app:num_fn} 
+
+We now describe our numerical procedure for bounding arbitrary functions of the
+CEF. The key simplification is to partition the CEF into a step function with M steps; this gives us a highly flexible shape for the CEF but lets us iterate over a finite set of possible CEFs. We describe the process for M=100.
+
+We conduct the following process. 
+\begin{enumerate}
+\item Consider the set of CEFs that can: (a) match the observed mean
+  levels of child rank within each parent rank bin, and (b) are
+  consistent with any additional assumptions (e.g., monotonocity and/or
+  smoothness assumptions). 
+\item For every CEF in this set, generate a function of the
+  CEF. Report the maximum and minimum value of this function,
+  collecting values over all CEFs in this set. 
+\end{enumerate}
+
+Formally, index interval-censored bins by $k$: define the non-overlapping intervals
+$[x_k, x_{k+1}]$ that cover $[0,100]$ for $k \in \{1, \dots,
+K\}$. Then define $\{r_k\}_{k=1}^K$ as the set of observed mean
+values of $y$ over each bin $k \in \{ 1, \dots, K \}$. Further define
+$S(\{r_k\}_{k=1}^K)$ to be the collection of CEFs that is consistent
+with these bin means and any desired auxiliary assumptions. For
+example, noting that $x$ is uniformly distributed, we can put:
+\begin{align} 
+S\left(\{r_k\}_{k=1}^K\right) &= \Big\{ Y(x) | \ Y(x) \text{ is weakly
+  increasing} \Big\} \nonumber \\ 
+& \bigcap \ \Big\{ Y(x) \Big| \ \frac{1}{x_{k+1} - x_k}
+  \int_{x_k}^{x_{k+1}} \left( Y(x) - r_k(x) \right) dx = 0
+  \text{, for all } k \Big\} .
+\end{align}
+
+Our objective is to bound $\gamma = \gamma(Y)$, some function of the
+CEF. In particular, we face the following constrained optimization problem to
+obtain the maximum and minimum values of $\gamma$: 
+\begin{align}
+\gamma^{\text{min}} &= \min_{Y \in S\left(\{r_k \}_{k=1}^K \right) }
+\tilde{\gamma}(Y) \\
+\gamma^{\text{max}} &= \max_{Y \in S\left(\{r_k \}_{k=1}^K  \right) }
+\tilde{\gamma}(Y). 
+\end{align}
+
+\citeasnoun{nra2020mort} provide details on the numerical techniques
+used to solve this problem. The bounds we report are the set
+$[\gamma^{\text{min}}, \gamma^{\text{max}}]$. For the case of the rank-rank gradient (the only time the numerical optimization is needed in the paper), we let $\gamma$ represent the
+slope of the linear approximation to the CEF. That
+is, fixing a CEF $Y(x)$, define 
+$$(\gamma, b) \coloneqq \argmin_{\gamma', b' \in \mathbb{R} } \int_0^{100} \left(Y(x) - \gamma'
+  x + b'\right)^2 dx.$$ 
+
+  We then use Equations B.2 and B.3 to calculate the minimum and maximum $\gamma'$ that can be generated from the set of valid CEFs. These form the bounds on the rank-rank gradient for a given set of moments.
+
+
