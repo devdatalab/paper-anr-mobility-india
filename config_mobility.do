@@ -18,9 +18,12 @@ if mi("$out") | mi("$tmp") | mi("$mobility") | mi("$mobcode") {
 /* set some subpaths */
 global nss $mobility
 global ihds $mobility
+global ihdscode $mobility/ihds
+global MASALA_PATH masala-merge
 
 /* create the subpaths that will be need */
 cap mkdir $out
+cap mkdir $out/interm
 cap mkdir $tmp
 cap mkdir $mobility
 
