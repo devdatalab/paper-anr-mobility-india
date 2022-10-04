@@ -131,39 +131,44 @@ This code was tested using Stata 16.0 and Matlab R2019a. The estimated run time 
 
 The mapping of results output names to tables and figures is as follows:
 
-Figure 1
-
-| Exhibit   | Filename                           |
-|-----------|------------------------------------|
-| Figure 1  | scatter-smooth-t-50-[12]-[12].pdf  |
-| Figure 2  | intuit_[a-d].png                   |
-| Figure 3  | mort_cef.pdf                       |
-| Figure 4  | naive-5-women-50-t-[12].pdf        |
-| Figure 5  | trend-smooth-mon-step-t-sex-50.pdf |
-| Figure 6  | changes-total-[12]-[12].pdf        |
-| Figure 7  | changes-nod-[12]-[12].pdf          |
-| Table 1   | table_mort_stats_1992.tex          |
-|           | table_mort_stats_2016.tex          |
-| Table 2   | age_adjusted_all_cause.tex         |
-| Table A1  | icd_causes.tex                     |
-| Table A2  | all_cause_std.tex                  |
-| Figure A1 | std_mort_perc_total.pdf            |
-| Figure A2 | naive-1-women-50-t-[12].pdf        |
-|           | naive-1-men-50-t-[12].pdf          |
-| Figure C1 | polyspline__50_[MF]_2012-2014.pdf  |
-| Table D1  | semimon_bounds.tex                 |
-| Figure D1 | f1992_semimon_[0520100].pdf        |
-| Figure D2 | causes-1992-2-1.pdf                |
-|           | causes-racesex-2-1.pdf             |
-|           | causes-mon-step-2-1.pdf            |
-|           | causes-nof-2-1.pdf                 |
-| Figure D3 | mean_within_rank_50_[12]_comb.pdf  |
-| Figure D4 | total_pops.pdf                     |
-| Figure D5 | hisp_shift_[12].pdf                |
-| Figure D6 | cps_pred_all_dropout.pdf           |
-| Figure D7 | cps_pred_all_hs.pdf                |
-| Figure D8 | ests_yline.pdf                     |
-| Figure D9 | lowess_sex_both.pdf                |
+| Exhibit   | Filename                               |
+|-----------|----------------------------------------|
+| Figure 1  | moments_1960_1985.png                  |
+|           | fig_example_cef_1960.png               |
+|           | fig_time_1960_25000.png                |
+| Figure 2  | \mobilitypath/example_ihds[2-5].pdf    |
+| Figure 3  | [daughter/son]_ed_time.pdf             |
+| Figure 4  | gradient_60_85                         |
+|           | p25_60_85                              |
+|           | mu50_60_85                             |
+| Figure 5  | ihds_mob_time_f[sd]                    |
+|           | ihds_mob_time_hs_[mf]                  |
+| Figure 6  | ihds_mob_group_time_p[27]5_[mf]        |
+| Figure 7  | jati_cohort_mob                        |
+| Table 1   | table_change_time_son.tex              |
+|           | table_change_time_daughter.tex         |
+| Table 2   | table_group_diff.tex                   |
+| Table 3   | mech_cassan[_women]                    |
+| Figure A1 | cores_age                              |
+| Figure A2 | cores_bias_upward_[mf]                 |
+| Figure A3 | scatter_[father/mother]_[son/daughter] |
+| Figure A4 | ihds_mob_time_m[sd]                    |
+| Figure A5 | ihds_mob_group_time_p25_[prim/hs]_[mf] |
+| Figure A6 | aa_time_series_[boy/girl]              |
+| Figure A7 | mob_gaps_sd_resids                     |
+|           | mincerian_returns_pooled_4             |
+|           | has_business_ts                        |
+|           | mob_by_own_business                    |
+| Table A1  | [firstrow]_19[5-8]0_tm_full.tex        |
+| Table A2  | app_table_validate_eds.tex             |
+| Table A3  | bottom_half_stats.tex                  |
+| Table A4  | table_gran[_binned].tex                |
+| Table A5  | mech_fertility.tex                     |
+| Figure C1 | sc_mus_father_[years/ranks]            |
+|           | mpce_[rank_]low_line                   |
+| Figure C2 | ihds_mob_group_[across/within]_mu[57]0 |
+| Table C1  | sim_moments.tex                        |
+| Table C2  | sim_param_ranks.tex                    |
 
 
 ## System Requirements
