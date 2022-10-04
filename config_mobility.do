@@ -35,8 +35,8 @@ qui do tools.do
 /* add ado folder to adopath */
 adopath + ado
 
+/* create the matlab basepath */
+shell echo "base_path = '$mobility';" >a/matlab/set_basepath.m
+
 cap log close
 log using $out/anr-mobility.log, text replace
-
-
-
