@@ -1,16 +1,16 @@
 # paper-anr-mobility-india
 
-Replication and Data Repository for "[Intergenerational Mobility in India: New Methods and Estimates Across Time, Space, and Communities](https://www.dartmouth.edu/~novosad/anr-mobility.pdf)," Asher, Novosad Rafkin (2020) or ANR 2020
+Replication and Data Repository for "[Intergenerational Mobility in India: New Measures and Estimates Across Time and Social groups](https://www.dartmouth.edu/~novosad/anr-mobility.pdf)," Asher, Novosad Rafkin (2022) or ANR 2022
 
 This repository contains:
 
 - Code for generating bottom half mobility and other CEF-based measures of intergenerational mobility from interval-censored rank data (e.g. education levels/ranks).
 
-- Replication code for results in the paper (may not be up to date with latest draft)
+- Replication code for results in the paper
 
 Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort).
 
-Replication data can be found at this [dropbox link](https://www.dropbox.com/sh/bk0d3jbweoailzw/AACj1XIP-5Vzt5iYpXXq4y3ia?dl=0); replication code is in the `a/` folder of this repo.
+Replication data can be found at this [dropbox link](https://www.dropbox.com/s/hhtts5hdyuc18bw/mobility_packet.zip?dl=0); [replication instructions](https://github.com/devdatalab/paper-anr-mobility-india/tree/repl#replication-instructions-for-asher-novosad-and-rafkin-2022) are at the bottom of this document.
 
 ## Calculating measures of mobility using ANR2020 (Stata)
 
@@ -99,14 +99,35 @@ The other Matlab functions in the folder are helper functions used by the above.
 
 The Matlab code can be readily modified to impose any kind of structural constraint on the CEF, or to calculate a different statistic from the outcome distribution, such as a conditional median or percentile.
 
-## Replication Instructions for Asher, Novosad, and Rafkin (2022)
+# Replication Instructions for Asher, Novosad and Rafkin (2022)
 
-This package is designed to be run on a *nix system with Python, Matlab, and Stata installed. Data and code folders for the replication must not include spaces. This package may require modification to run on Windows due to the use of some Unix shell commands.
+## Data Availability
+
+The primary data source for this project is the [India Human Development Survey II](https://ihds.umd.edu/data/ihds-2). The replication data repo includes some files from IHDS; visit the [IHDS site](https://ihds.umd.edu/data/ihds-2) for more information and data from IHDS. The data are open to the public. All data sources used in the paper are available in the paper's data packet. Ancillary analyses use data from NSS 68 and the U.S. Census.
+
+## Dataset list
+
+| Data file    | Source               | Provided                        |
+|--------------|----------------------|---------------------------------|
+| `clean/nss*` | NSS                  | Yes, modules used in paper only |
+| `jati/*`     | Census of India 2001 | Yes, modules used in paper only |
+| `raw/*`      | IHDS                 | Yes, modules used in paper only |
+| `us/*`       | US Census 2010       | Yes, modules used in paper only |
+
+## Computational Requirements
+
+This package is designed to be run on a *nix system with Python 3.2+, Matlab 2019+, and Stata 16+ installed. Data and code folders for the replication must not include spaces. This package may require modification to run on Windows due to the use of some Unix shell commands. This package was tested on a system with about 30 GB of memory.
+
+## Description of programs / code
+
+The file `make_mobility.do` describes the build and analysis process in detail.
+
+## Instructions to Replicators
 
 To regenerate the tables and figures from the paper, take the
 following steps:
 
-1. Download and unzip the replication data package `mobility-packet.zip` from this [Google Drive Folder TBD](http://test.com)
+1. Download and unzip the replication data package `mobility-packet.zip` from this [Google Drive Folder](https://www.dropbox.com/s/hhtts5hdyuc18bw/mobility_packet.zip?dl=0)
    
 2. Clone this repo.
 
@@ -171,8 +192,6 @@ The mapping of results output names to tables and figures is as follows:
 | Table C2  | sim_param_ranks.tex                    |
 
 
-## System Requirements
 
-This code relies on Unix (Linux or Mac) Stata 16 and Matlab 2019 or newer.
 
 

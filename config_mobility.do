@@ -18,7 +18,7 @@ if mi("$out") | mi("$tmp") | mi("$mobility") | mi("$mobcode") {
 /* set some subpaths */
 global nss $mobility
 global ihds $mobility
-global ihdscode $mobility/ihds
+global ihdscode ihds
 global MASALA_PATH masala-merge
 
 /* create the subpaths that will be need */
@@ -35,8 +35,8 @@ qui do tools.do
 /* add ado folder to adopath */
 adopath + ado
 
+/* create the matlab basepath */
+shell echo "base_path = '$mobility';" >a/matlab/set_basepath.m
+
 cap log close
 log using $out/anr-mobility.log, text replace
-
-
-

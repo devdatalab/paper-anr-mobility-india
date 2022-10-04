@@ -97,12 +97,12 @@ cap prog def transition_matrix
   order father_level son_no_e son_less_prim son_prim son_mid son_sec son_hs son_college
   list
 
-  export delimited using ~/iec/output/mobility/`csvname'.tex, replace novarnames 
+  export delimited using $out/`csvname'.tex, replace novarnames 
 
   /* convert to a tex */
-  !sed -i 's/\,/ \& /g' ~/iec/output/mobility/`csvname'.tex
-  !sed -i 's/$/ \\\\ /g' ~/iec/output/mobility/`csvname'.tex
-  !sed -i 's/father_level/ /g' ~/iec/output/mobility/`csvname'.tex
+  !sed -i 's/\,/ \& /g' $out/`csvname'.tex
+  !sed -i 's/$/ \\\\ /g' $out/`csvname'.tex
+  !sed -i 's/father_level/ /g' $out/`csvname'.tex
   
   capture file close fh 
   file open fh using $out/firstrow_`csvname'.tex,  write replace

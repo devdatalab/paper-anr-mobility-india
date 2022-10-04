@@ -161,9 +161,11 @@ do $mobcode/a/stats_bottom_half.do
 /*******************/
 if "$fast" == "1" exit
 
+cd $mobcode/a/matlab
+
 /* Use matlab to calculate curvature-constrained mus and gradients */
-shell matlab -nosplash -nodesktop -r '$mobcode/a/matlab/calc_all_mob_stats; exit;'
+shell matlab -r "run('calc_all_mob_stats.m'); exit;"
 
 /* make other matlab figures */
-shell matlab $mobcode/a/matlab/make_all_figures
+shell matlab -r "run('make_all_figures.m'); exit;"
 
