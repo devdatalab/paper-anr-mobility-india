@@ -1,2 +1,1 @@
-base_path = '~/iec/mobility'
-
+base_path = '/scratch/pn/mobility';
