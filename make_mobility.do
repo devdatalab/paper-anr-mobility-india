@@ -1,5 +1,5 @@
 /* load replication config [this calls an empty file in the project repo]  */
-do $mobcode/config_mobility.do
+do config_mobility.do
 
 /* set this global to 1 in order to skip the Matlab parts
    (only Figure 1 and the rank-rank gradient calculation) */

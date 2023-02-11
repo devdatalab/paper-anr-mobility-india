@@ -105,6 +105,8 @@ The Matlab code can be readily modified to impose any kind of structural constra
 
 The primary data source for this project is the [India Human Development Survey II](https://ihds.umd.edu/data/ihds-2). The replication data repo includes some files from IHDS; visit the [IHDS site](https://ihds.umd.edu/data/ihds-2) for more information and data from IHDS. The data are open to the public. All data sources used in the paper are available in the paper's data packet. Ancillary analyses use data from NSS 68 and the U.S. Census.
 
+The authors have legitimate access to and permission to use the data used in this manuscript. The data for the project have been deposited into openICPSR (openicpsr-184504).
+
 ## Dataset list
 
 | Data file    | Source               | Provided                        |
@@ -129,7 +131,7 @@ following steps:
 
 1. Download and unzip the replication data package `mobility-packet.zip` from this [Google Drive Folder](https://www.dropbox.com/s/hhtts5hdyuc18bw/mobility_packet.zip?dl=0)
    
-2. Clone this repo.
+2. Clone this repo (github) or copy all the code into a folder (icpsr)
 
 3. Open the do file `config_mobility.do`, and set the globals `out`,
    `mobility`, and `tmp`.  
@@ -139,10 +141,7 @@ following steps:
      replication data package.
    * intermediate files will be placed in both `$tmp` and `$mobility`.
 
-4. FIXFIX Open `matlab/set_basepaths.m` and set `base_path` to the same path as `$mobility`.
-
-5. Run the do file `make_mobility.do`.  This will run through all the
-   other do files to regenerate all of the results in `$out/`. The do file runs matlab from shell commands in several locations. Your local machine may need additional configuration to be able to run Matlab from Stata. Alternatively, you can run these Matlab programs separately when you get there.
+4. Switch to the base code folder and run the do file `make_mobility.do`.  This will run through all the other do files to regenerate all of the results in `$out/`. The do file runs matlab from shell commands in several locations. Your local machine may need additional configuration to be able to run Matlab from Stata. Alternatively, you can run these Matlab programs separately when you get there.
    
 ## Replication Notes
 
@@ -190,8 +189,4 @@ The mapping of results output names to tables and figures is as follows:
 | Figure C2 | ihds_mob_group_[across/within]_mu[57]0 |
 | Table C1  | sim_moments.tex                        |
 | Table C2  | sim_param_ranks.tex                    |
-
-
-
-
 
