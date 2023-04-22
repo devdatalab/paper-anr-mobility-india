@@ -36,14 +36,14 @@ use $mobility/us/us_ed_mobility_clean, replace
 /* calculate mu-0-50 for men/women, for all races, whites, blacks */
 foreach race in all white black {
   foreach gender in f m {
-    bound_mobility if gender == "`gender'" & race == "`race'", xvar(par_rank) yvar(kid_rank) s(0) t(50)
+    bound_param if gender == "`gender'" & race == "`race'", xvar(par_rank) yvar(kid_rank) s(0) t(50)
     local mid = (`r(mu_ub)' + `r(mu_lb)') / 2
     stc, file($out/mob_constants) idshort(us_mu_`gender'_`race') idlong(us_mu_0_50_`gender'_`race') value(`mid') ///
         desc("Upward mobility U.S. `gender' `race'")
   }
 }
 
-/* calculate p25 -- for comparison */
-bound_mobility if gender == "f" & race == "all", xvar(par_rank) yvar(kid_rank) s(25) t(25)
-bound_mobility if gender == "m" & race == "all", xvar(par_rank) yvar(kid_rank) s(25) t(25)
+/* calculate p25 -- for CRIW presentation */
+bound_param if gender == "f" & race == "all", xvar(par_rank) yvar(kid_rank) s(25) t(25)
+bound_param if gender == "m" & race == "all", xvar(par_rank) yvar(kid_rank) s(25) t(25)
 

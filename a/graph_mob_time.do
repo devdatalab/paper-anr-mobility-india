@@ -48,6 +48,12 @@ graph_mob, name(ihds_mob_time_fd) mu(p25) sex(daughter) parent(father) ///
         ylabel(30(5)50) ytitle("E(Daughter Rank)")
 graphout ihds_mob_time_fd, pdf
 
+/* outsheet CSV to reproduce this graph */
+export delimited mu y sex bc_mid lb ub if parent == "father" & ///
+    ((mu == "p25" & inlist(y, "rank", "hs")) | ///
+     (mu == "p75" & y == "hs")) ///
+    using $tmp/mob-all-groups.csv, replace
+
 /* Mother-Son and Mother-Daughter -- uninformative graph for appendix  */
 graph_mob, name(ihds_mob_time_ms) mu(p25) sex(son) parent(mother) ///
         ylabel(30(5)50) ytitle("E(Son Rank)")
@@ -93,7 +99,7 @@ text(46.5 1985 "{stSerif:Denmark}", size(medsmall)) text(42.5 1988 "{stSerif:USA
 graphout ihds_upward_mob_time_new_d, pdf
 
 
-/* BELOW: aggregate with levels as outputs */
+/* BELOW: aggregate with levels as outputs -- probably don't include. */
 
 /* graph output: expected son completion of primary+, middle+, hs+ vs. birth cohort, upward and downward mobility */
 foreach ed in prim mid hs uni {

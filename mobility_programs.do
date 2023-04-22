@@ -1,5 +1,131 @@
 qui {
 
+  /* set mobility globals */
+  global bc_list 1950 1960 1970 1975 1980 1985
+
+  /* set subgroup graph colors */
+  global muscolor 150 150 255
+  global sccolor  252 46 24
+  global gencolor 32 32 32
+  global stcolor  190 210 160
+  
+  /**********************************************************************************/
+  /* program rerank : rerank fathers and sons in current sample */
+  /***********************************************************************************/
+  cap prog drop rerank
+  prog def rerank
+    syntax, [by(passthru)]
+  
+    capdrop child_ed_rank father_ed_rank_c mother_ed_rank_c son_ed_rank father_ed_rank_s father_ed_rank_d daughter_ed_rank mother_ed_rank_s mother_ed_rank_d
+  
+    /* generate son education ranking */
+    gen_wt_ranks son_ed, gen(son_ed_rank) weight(wt) `by'
+    
+    /* generate father education ranking for father - son links */
+    gen_wt_ranks father_ed if !mi(son_ed), gen(father_ed_rank_s) weight(wt) `by'
+    
+    /* generate father education ranking for father - daughter links */
+    cap gen_wt_ranks father_ed if !mi(daughter_ed), gen(father_ed_rank_d) weight(wt) `by'
+    
+    /* generate daughter education ranking */
+    cap gen_wt_ranks daughter_ed, gen(daughter_ed_rank) weight(wt) `by'
+    
+    /* generate mother education ranking for mother - son links */
+    cap gen_wt_ranks mother_ed if !mi(son_ed), gen(mother_ed_rank_s) weight(wt) `by'
+    
+    /* generate mother education ranking for mother - daughter links */
+    cap gen_wt_ranks mother_ed if !mi(daughter_ed), gen(mother_ed_rank_d) weight(wt) `by'
+
+    /* generate joint son/daughter (i.e. child ranks) */
+    gen_wt_ranks child_ed, gen(child_ed_rank) weight(wt) `by'
+    gen_wt_ranks father_ed if !mi(child_ed), gen(father_ed_rank_c) weight(wt) `by'
+    gen_wt_ranks mother_ed if !mi(child_ed), gen(mother_ed_rank_c) weight(wt) `by'
+  end
+  /* *********** END program rerank ***************************************** */
+  
+  /********************************************************************************/
+  /* program gen_bc_ranks : Standardized birth cohort groups across all analyses */
+  /********************************************************************************/
+  cap prog drop gen_bc_ranks
+  prog def gen_bc_ranks
+  {
+    /* manually create birth cohort groups -- 5 years for recent period, ten for way back */
+    cap drop bc
+    gen bc = .
+    replace bc = 1950 if inrange(birth_year, 1950, 1959)
+    replace bc = 1960 if inrange(birth_year, 1960, 1969)
+    replace bc = 1970 if inrange(birth_year, 1970, 1974)
+    replace bc = 1975 if inrange(birth_year, 1975, 1979)
+    replace bc = 1980 if inrange(birth_year, 1980, 1984)
+    replace bc = 1985 if inrange(birth_year, 1985, 1989)
+  
+    rerank, by(bc)
+  }
+  end
+  /* *********** END program gen_bc_ranks ***************************************** */
+  
+  /*************************************************************************************/
+  /* program get_bc_mid : Create bc_mid, which is midpoint of multi-year birth cohorts */
+  /*************************************************************************************/
+  cap prog drop get_bc_mid
+  prog def get_bc_mid
+  {
+    gen     bc_mid = bc + 4.5 if inlist(bc, 1950, 1960)
+    replace bc_mid = bc + 2 if bc >= 1970 & !mi(bc)
+  }
+  end
+  /* *********** END program get_bc_mid ***************************************** */
+
+  /*******************************************************************************/
+  /* program downcode_ed: Downcode granular education to 7 NSS/SECC categories   */
+  /*******************************************************************************/
+  cap prog drop downcode_ed
+  prog def downcode_ed
+  {
+    syntax varname, [GENerate(name) REPLace]
+
+    /* handle generate / replace */
+    tokenize `varlist'
+    local name = "`1'"
+    
+    /* if no generate specified, assume user intends to replace */
+    if mi("`generate'") {
+      local name = "`1'"
+    }
+    
+    /* if generate specified, copy the variable right away */
+    else {
+      gen `generate' = `1'
+      local name = "`generate'"
+    }
+    
+    replace `name' = 0  if inrange(`1', 0, 1.9)
+    replace `name' = 2  if inrange(`1', 2, 4.9) 
+    replace `name' = 5  if inrange(`1', 5, 7.9) 
+    replace `name' = 8  if inrange(`1', 8, 9.9) 
+    replace `name' = 10 if inrange(`1', 10, 11.9) 
+    replace `name' = 12 if inrange(`1', 12, 13.9) 
+    replace `name' = 14 if inrange(`1', 14, 20) 
+  }
+  end
+  /** END program downcode_ed ****************************************************/
+
+  /*****************************************************************************/
+  /* program mob_label_vars: Labels variables for generating mobility tables   */
+  /*****************************************************************************/
+  cap prog drop mob_label_vars
+  prog def mob_label_vars
+  {
+      cap label var age "Age"
+      cap label var ed "Child years of education"
+      cap label var ln_hh_income "Log household income"
+      cap label var hh_income "Household income"
+      cap label var son_ed "Child years of education"
+      cap label var daughter_ed "Child years of education"
+  }
+  end
+  /** END program mob_label_vars ***********************************************/
+
   /************************************************************************/
   /* program bound_mobility : generate analytical bounds on mobility CEFs */ 
   /* s: low end of parent rank interval (defaults to 0 for bottom half mobility) */
@@ -1005,5 +1131,233 @@ qui {
   }
   end
   /* *********** END program group ***************************************** */
+
+/* NOTE: bound_param is nearly identical to bound_mobility; it is better to use bound_mobility,
+         but bound_param is used by some of our older code. */
+  /**********************************************************************************/
+  /* program bound_param : generate analytical bounds on mu or p */ 
+  /* s: lower bound */
+  /* t: upper bound */
+  /* if s = t, then this returns the bounds on p_s = p_t  */
+
+  /* sample use:
+  // calculate p25
+  bound_param [aw pw] [if], xvar(father_ed_rank) yvar(son_ed_rank_decade) s(25) t(25) [by(birth_cohort)]
   
+  // calculate mu50
+  bound_param [aw pw] [if], xvar(father_ed_rank) yvar(son_ed_rank_decade) s(0) t(50) [by(birth_cohort)]
+  */
+  
+  /***********************************************************************************/
+  capture prog drop bound_param 
+  prog def bound_param, rclass
+    
+    syntax [aweight pweight] [if], xvar(string) yvar(string) [s(real 0) t(real 50) maxmom(real 100) minmom(real 0) append(string) str(string) forcemono QUIet verbose] 
+
+    preserve
+
+    qui {
+
+      /* keep if if */
+      if !mi("`if'") {
+        keep `if'
+        local ifstring "`if'"
+      }
+
+      /* only use "noi" if verbose is specified */
+      if !mi("`verbose'") {
+        local noi noisily
+      }
+      
+      /* require non-missing xvar and yvar */
+      count if mi(`xvar') | mi(`yvar')
+      if `r(N)' > 0  & ("`verbose'" != "") {
+        `noi' disp "Warning: ignoring `r(N)' rows that are missing `xvar' or `yvar'."
+      }
+      keep if !mi(`xvar') & !mi(`yvar')
+
+      /* fail with an error message if there's no data left */
+      qui count
+      if `r(N)' < 2 {
+        disp as error "bound_param: Only `r(N)' observations left in sample; cannot bound anything."
+        error 456
+      }
+      
+      // Create convenient weight local
+      if ("`weight'" != "") {
+        local wt [`weight'`exp']
+        local longweight = "weight(" + substr("`exp'", 2, .) + ")"
+      }
+
+      /* if not monotonic */
+      is_monotonic, x(`xvar') y(`yvar') `longweight'
+      if `r(is_monotonic)' == 0 {
+
+        /* combine bins to force monotonicity if requested */
+        if !mi("`forcemono'") {
+          `noi' make_monotonic, x(`xvar') y(`yvar') `longweight' preserve_ranks
+          make_monotonic, x(`xvar') y(`yvar') `longweight' preserve_ranks
+        }
+
+        /* otherwise fail */
+        else {
+          display as error "ERROR: bound_param cannot estimate mu with non-monotonic moments"
+          local FAILED 1
+        }
+      }
+      
+      /* sort by the x variable */
+      sort `xvar'
+      
+      /* collapse on xvar [does nothing if data is already collapsed] */
+      collapse (mean) `yvar' `wt' , by(`xvar')
+      
+      /* rename variables for convenience */
+      ren `yvar' y_moment
+      ren `xvar' x_moment
+
+      /************************************************/
+      /* STEP 1: get moments/cuts  */
+      /************************************************/
+
+      /* obtain the cuts from the midpoints */
+      sort x_moment
+      gen xcuts = x_moment[1] * 2 if _n == 1
+      local n = _N
+      
+      forv i = 2/`n' {
+        replace xcuts = (x_moment - xcuts[_n-1]) * 2 + xcuts[_n-1] if _n == `i' 
+      }
+      replace xcuts = 100 if _n == _N 
+      
+      /**************************************************/
+      /* STEP 2: CONVERT PARAMETERS TO LOCALS */
+      /**************************************************/
+      /* obtain important parameters and put into locals */
+      forv i = 1/`n' {
+        
+        local y_moment_next_`i' = y_moment[`i'+1]
+        local y_moment_prior_`i' = y_moment[`i'-1]
+        local y_moment_`i' = y_moment[`i']
+        local x_moment_`i' = x_moment[`i']
+        local min_bin_`i' = xcuts[`i'-1]
+        local max_bin_`i' = xcuts[`i']
+        
+        local min_bin_1 = 0 
+        local max_bin_`n' = 100 
+        local y_moment_prior_1 = `minmom' 
+        local y_moment_next_`n' = `maxmom' 
+        
+        /* get the star for each bin */
+        local star_bin_`i' = (`y_moment_next_`i'' * `max_bin_`i'' - (`max_bin_`i'' - `min_bin_`i'') * `y_moment_`i'' - `min_bin_`i'' * `y_moment_prior_`i'' ) / ( `y_moment_next_`i'' - `y_moment_prior_`i'' )
+        
+        /* close loop over bins */
+        
+      }
+      
+      /* determine the bin that s and t are in */
+      forv i = 1/`n' {
+        
+        if `min_bin_`i'' <= `t' & `max_bin_`i'' >= `t' { 
+          local bin_t = `i'
+        }
+        
+        if `min_bin_`i'' <= `s' & `max_bin_`i'' >= `s' { 
+          local bin_s = `i'
+        }
+        
+      }    
+      
+      /* make everything easier to reference by dropping the end index */
+      foreach variable in min_bin max_bin y_moment_prior y_moment_next y_moment x_moment star_bin {
+        local `variable'_t = ``variable'_`bin_t''
+        local `variable'_s = ``variable'_`bin_s''
+      }
+      
+      /***************************/
+      /* STEP 3: GET THE BOUNDS  */
+      /***************************/
+      
+      /* get the analytical lower bound */
+      if (`t' < `star_bin_t') local analytical_lower_bound_t = `y_moment_prior_t' 
+      if (`t' >= `star_bin_t') local analytical_lower_bound_t = 1/(`t' - `min_bin_t') * ( (`max_bin_t' - `min_bin_t') * `y_moment_t' - (`max_bin_t' - `t') * `y_moment_next_t' )
+      
+      /* get the analytical upper bound */
+      if (`s' < `star_bin_s') local analytical_upper_bound_s = 1/(`max_bin_s' - `s') * ((`max_bin_s' - `min_bin_s' )* `y_moment_s' - (`s' - `min_bin_s') * `y_moment_prior_s' )
+      if (`s' >= `star_bin_s') local analytical_upper_bound_s = `y_moment_next_s'
+      
+      /* if the t value is not in the same bin as s, average the determined value of the moments in prior bins, plus the analytical
+      lower bound times the proportion of mu_0^t it constitutes */
+      if `bin_t' != `bin_s' {
+        
+        local bin_t_minus_1 = `bin_t' - 1
+        local bin_s_plus_1 = `bin_s' + 1
+        
+        /* add the determined portion, mu_prime, only if there is a full bin in between s and t  */      
+        if `bin_t' - `bin_s' >= 2 {
+          local mu_prime = 0 
+          /* obtain the weighted value of the moments between s and t  */  
+          forv i = `bin_s_plus_1'/`bin_t_minus_1' {
+            local bin_size_`i' = `max_bin_`i'' - `min_bin_`i''         
+            local wt =  `bin_size_`i'' / (`t' - `s') * `y_moment_`i'' 
+            local mu_prime = `mu_prime' + `wt'
+          }
+        }      
+        else {
+          local mu_prime = 0
+        }
+        di "`mu_prime'" 
+        /* put this together with the determined portion of the parameter */  
+        local lb_mu_s_t = `mu_prime' + (`t' - max(`max_bin_`bin_t_minus_1'',`s') ) / (`t' - `s') * `analytical_lower_bound_t' + (`max_bin_s' - `s') / (`t' - `s') * `y_moment_s' * (`bin_s' != `bin_t') 
+        local ub_mu_s_t = `mu_prime' + (`t' - `max_bin_`bin_t_minus_1'' ) / (`t' - `s') * `y_moment_t' * (`bin_s' != `bin_t') + (min(`max_bin_s',`t') - `s') / (`t' - `s') * `analytical_upper_bound_s' 
+      }
+      
+      /* if the t IS in the same interval as s, the bounds are simpler to compute: just take the analytical lower bound of t, or the analytical upper bound of s */
+      if `bin_t' == `bin_s' {
+        local lb_mu_s_t = `analytical_lower_bound_t'
+        local ub_mu_s_t = `analytical_upper_bound_s'
+      }
+      
+      /* return the locals that are desired */
+      if "`FAILED'" != "1" {
+        return local t = `t'
+        return local s = `s'
+        return local mu_lower_bound = `lb_mu_s_t'
+        return local mu_upper_bound = `ub_mu_s_t'                     
+        return local mu_lb = `lb_mu_s_t'
+        return local mu_ub = `ub_mu_s_t'                     
+        return local star_bin_s = `star_bin_s'
+        return local star_bin_t = `star_bin_t'    
+        return local num_moms = _N
+      }
+    }
+
+    if "`FAILED'" != "1" {
+      local rd_lb_mu_s_t: di %6.3f `lb_mu_s_t'
+      local rd_ub_mu_s_t: di %6.3f `ub_mu_s_t'
+
+      if mi("`quiet'") {      
+        di `" Mean `yvar' in(`s', `t') is in [`rd_lb_mu_s_t', `rd_ub_mu_s_t'] "'   
+      }
+      
+      if !mi("`append'") {
+        append_to_file using `append', s(`str',`rd_lb_mu_s_t', `rd_ub_mu_s_t')
+      }
+    }
+    else {
+      return local t = `t'
+      return local s = `s'
+      return local mu_lower_bound = .
+      return local mu_upper_bound = .
+      return local mu_lb = .
+      return local mu_ub = .
+      return local star_bin_s = .
+      return local star_bin_t = .
+      return local num_moms = _N
+    }
+    /* close program */
+    restore
+  end
+  /* *********** END program bound_param ***************************************** */
+
 }

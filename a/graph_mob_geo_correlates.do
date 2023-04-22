@@ -16,7 +16,7 @@ foreach p in 25 {
 drop if n_obs < 1000
 
 /* merge rural subdistrict data */
-merge 1:1 pc11_state_id pc11_district_id pc11_subdistrict_id using ~/iec/mobility/covars/subdistrict_mobility_covariates
+merge 1:1 pc11_state_id pc11_district_id pc11_subdistrict_id using $mobility/covars/subdistrict_mobility_covariates
 keep if _merge == 3
 drop _merge
 
@@ -104,7 +104,7 @@ foreach p in 25 {
 drop if n_obs < 300
 
 /* merge town data */
-merge 1:1 pc11_state_id pc11_district_id pc11_subdistrict_id pc11_town_id using ~/iec/mobility/covars/town_mobility_covariates
+merge 1:1 pc11_state_id pc11_district_id pc11_subdistrict_id pc11_town_id using $mobility/covars/town_mobility_covariates
 keep if _merge == 3
 drop _merge
 
@@ -190,4 +190,8 @@ coefplot ($coef_list, pstyle(p7)), ///
 drop(_cons) xline(0) xtitle("") ///
 title("Expected Upward Mobility Rank Gain from 1 SD Change")
 graphout urban_mobility_coefplot,  pdf 
+
+
+
+
 

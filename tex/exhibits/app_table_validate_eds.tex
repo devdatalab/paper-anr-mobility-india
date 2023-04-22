@@ -1,0 +1,23 @@
+\setlength{\linewidth}{.1cm} \begin{center}
+\newcommand{\contents}{\begin{tabular}{l*{6}{c}}
+\hline\hline
+ & \multicolumn{2}{c}{Father-Son} & \multicolumn{2}{c}{Father-Daughter} & \multicolumn{2}{c}{Mother-Daughter} \\ 
+%PYTHON_HEADER
+                    &         (1)   &         (2)   &         (3)   &         (4)   &         (5)   &         (6)   \\
+\hline
+Age                 &               &      -0.000   &               &      -0.018   &               &      -0.008   \\
+                    &               &     (0.008)   &               &     (0.016)   &               &     (0.007)   \\
+Child years of education&               &       0.008   &               &       0.037*  &               &       0.003   \\
+                    &               &     (0.013)   &               &     (0.021)   &               &     (0.011)   \\
+Log household income&               &      -0.005   &               &      -0.051   &               &      -0.026   \\
+                    &               &     (0.029)   &               &     (0.058)   &               &     (0.036)   \\
+Constant            &       0.053   &       0.054   &      -0.002   &       0.912   &       0.006   &       0.545   \\
+                    &     (0.056)   &     (0.431)   &     (0.103)   &     (0.841)   &     (0.052)   &     (0.466)   \\
+N                   &        1258   &        1255   &         440   &         440   &         726   &         725   \\
+r2                  &        0.00   &        0.00   &        0.00   &        0.01   &        0.00   &        0.00   \\
+\hline
+\multicolumn{7}{p{\linewidth}}{$^{*}p<0.10, ^{**}p<0.05, ^{***}p<0.01$} \\
+\multicolumn{7}{p{\linewidth}}{\footnotesize \tablenote}
+\end{tabular} }
+\setbox0=\hbox{\contents}
+\setlength{\linewidth}{\wd0-2\tabcolsep-.25em} \contents \end{center}

@@ -7,6 +7,7 @@
 /***************************************/
 global childlist son daughter
 global grouplist 0/4
+global bs 1000
 
 /* load bootstrap program */
 qui do $mobcode/b/bootstrap_from_bounds.do
@@ -45,7 +46,7 @@ foreach child in $childlist {
       /* first get the "true" set */
       qui {
         use $tmp/ihds_data_expanded, clear 
-        bound_mobility [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
+        bound_param [aw=wt] if bc == `bc' & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
         local lb = `r(mu_lb)'
         local ub = `r(mu_ub)'
 
@@ -77,11 +78,11 @@ foreach child in $childlist {
     /* first get the "true" set */
     qui {
       use $tmp/ihds_data_expanded, clear 
-      bound_mobility [aw=wt] if bc == 1960 & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
+      bound_param [aw=wt] if bc == 1960 & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
       local lb_1960 = `r(mu_lb)'
       local ub_1960 = `r(mu_ub)'
       
-      bound_mobility [aw=wt] if bc == 1980 & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
+      bound_param [aw=wt] if bc == 1980 & group == `group', s(0) t(50) xvar(father_ed_rank_`shortstr') yvar(`child'_ed_rank) forcemono qui
       local lb_1980 = `r(mu_lb)'
       local ub_1980 = `r(mu_ub)'
       

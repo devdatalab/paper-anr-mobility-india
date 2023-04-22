@@ -27,6 +27,7 @@ append_to_file using $l, s(group, estimate, se, dataset, outcome)
 keep if inrange(age, 18, 64)
 
 /* loop over collapsed groups */
+ren child_ed_granular ed_granular
 forv group = 1/3 { 
   quireg ln_income ed_granular age age2 if collapsed_group == `group' [pw = wt] , robust title(`group')
 }

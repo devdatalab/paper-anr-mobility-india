@@ -24,25 +24,36 @@ foreach bc in 1985 {
       di "`bc'-`g'-`urb'"
 
       /* group upward mobility for boys, then girls */
-      bound_mobility [aw=wt] if urban == `urb' & bc == `bc' & male == 1 & group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+      bound_param [aw=wt] if urban == `urb' & bc == `bc' & male == 1 & group == `g', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
       append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 1)
       
-      bound_mobility [aw=wt] if urban == `urb' & bc == `bc' & male == 0 & group == `g', s(0) t(50) xvar(father_ed_rank_d) yvar(daughter_ed_rank) forcemono
+      bound_param [aw=wt] if urban == `urb' & bc == `bc' & male == 0 & group == `g', s(0) t(50) xvar(father_ed_rank_d) yvar(daughter_ed_rank) forcemono
       append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 0)
     }
 
     /* repeat for pooled groups, boys then girls */
-      bound_mobility [aw=wt] if urban == `urb' & bc == `bc' & male == 1 , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
-      append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 1)
+    bound_param [aw=wt] if urban == `urb' & bc == `bc' & male == 1 , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+    append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 1)
       
-      bound_mobility [aw=wt] if urban == `urb' & bc == `bc' & male == 0 , s(0) t(50) xvar(father_ed_rank_d) yvar(daughter_ed_rank) forcemono
-      append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 0)
+    bound_param [aw=wt] if urban == `urb' & bc == `bc' & male == 0 , s(0) t(50) xvar(father_ed_rank_d) yvar(daughter_ed_rank) forcemono
+    append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 0)
     
   }
+
+  /* repeat for pooled groups and sector, boys then girls */
+  bound_param [aw=wt] if bc == `bc' & male == 1 , s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+  append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 1)
+
+  bound_param [aw=wt] if bc == `bc' & male == 0 , s(0) t(50) xvar(father_ed_rank_d) yvar(daughter_ed_rank) forcemono
+  append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 0)
+
 }
 
 /* NOW LOAD THE BOUNDS DATA */
 import delimited using $f, clear
+
+/* drop the pooled sector lines */
+drop if mi(urban)
 
 /* set group to 0 for pooled groups */
 replace group = 0 if mi(group)
@@ -93,7 +104,7 @@ foreach bc in 1985 {
       di "`bc'-`g'-`urb'"
     
       /* group upward mobility for boys */
-      bound_mobility [aw=wt] if urban == `urb' & group == `g' & bc == `bc', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+      bound_param [aw=wt] if urban == `urb' & group == `g' & bc == `bc', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
       append_to_file using $f, s(`r(mu_lb)',`r(mu_ub)',`bc',p25,`g', `urb', 1)
     }
   }

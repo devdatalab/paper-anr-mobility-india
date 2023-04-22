@@ -5,8 +5,7 @@
 /* open mobility IHDS */ 
 use $mobility/ihds/ihds_mobility, clear
 
-/* code variable of people with a business  */
-/* [FIX: CUT THIS ONCE ON POLARIS--I AM MISSING LOCAL RAW IHDS (pn 2019-12) */
+/* rename variable of people with a business (probably not needed anymore)  */
 cap ren nf1 has_business
 
 /* set sample and define birth cohort groups */
@@ -55,7 +54,7 @@ append_to_file using $f, s(x, has_business, group, lb, ub, bc, mu, y)
 foreach bc in 1950 1960 1970 1980 {
   foreach has_business in 0 1 {
     foreach group in 1 2 3 {
-      bound_mobility [aw=wt] if bc == `bc' & has_business == `has_business' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+      bound_param [aw=wt] if bc == `bc' & has_business == `has_business' & group == `group', s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
       if _rc == 0 { 
         append_to_file using $f, s(father,`has_business',`group',`r(mu_lb)',`r(mu_ub)',`bc',mu0-50,rank)
       }

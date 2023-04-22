@@ -27,6 +27,9 @@ twoway ///
     ylabel(25(5)45,labsize(medlarge)) xscale(range(1950 1990)) xlabel(1960(10)1990,labsize(medlarge))
 graphout ihds_mob_group_time_p25_m, pdf
 
+export delimited group mu y sex bc_mid lb ub if parent == "father" & y == "rank" & mu == "p25" ///
+    using $tmp/mob-subgroups.csv, replace
+
 /* graph output: expected son education rank vs. birth cohort for p75 for each of the four subgroups */
 twoway ///
     (rarea lb ub bc_mid if y == "rank" & mu == "p75" & group == 1 & sex == "son", color("32 32 32") ) ///
@@ -77,6 +80,25 @@ twoway ///
     text(63 1960 "Scheduled Tribes"    , size(medium) color(black)) ///
     xlabel(1960(10)1990,labsize(medlarge)) xscale(range(1950 1990)) ylabel(50(5)75,labsize(medlarge))
 graphout ihds_mob_group_time_p75_f, pdf
+
+// /* graph output: expected son education rank vs. birth cohort for p25 for each of the four subgroups
+// for posting -- expanded figure title */
+// twoway ///
+//     (rarea lb ub bc_mid if mu == "p25" & group == 1 & sex == "son", color("32 32 32") ) ///
+//     (rarea lb ub bc_mid if mu == "p25" & group == 2 & sex == "son", color("150 150 255") ) ///
+//     (rarea lb ub bc_mid if mu == "p25" & group == 3 & sex == "son", color("252 46 24") ) ///
+//     (rarea lb ub bc_mid if mu == "p25" & group == 4 & sex == "son", color("190 210 160") ) ///
+//     (line  lb    bc_mid if mu == "p25" & group == 2 & sex == "son", color("75 75 125") ) ///
+//     (line  ub    bc_mid if mu == "p25" & group == 2 & sex == "son", color("75 75 125") ) ///
+//     , legend(off) ytitle("Average Son Rank", ) xtitle("Birth Cohort", ) ///
+//     text(41 1963.5 "{stSerif:Forward / Others}"  , size(medsmall) color(black)) ///
+//     text(29 1977 "{stSerif:Muslims}"             , size(medsmall) color(black)) ///
+//     text(36 1968.3 "{stSerif:Scheduled Castes}", size(medsmall) color(black)) ///
+//     text(33 1975 "{stSerif:Scheduled Tribes}"    , size(medsmall) color(black)) ///
+//     xlabel(1960(10)1990) ylabel(25(5)45) ///
+//     //title("Average Education Rank for Sons with Father in Bottom Half of Distribution")
+// graphout ihds_mob_group_time_p25_web
+
 
 /* graph output: p25/p75 for each level of son educational attainment and education rank vs birth cohort, by group */
 // foreach level in prim hs uni {
@@ -155,7 +177,30 @@ foreach level in prim hs uni {
           ylabel(,labsize(medlarge)) xlabel(1960(10)1980, labsize(medlarge)) ytitle("Share Daughters with ``level'_name'", size(medlarge)) xtitle("Birth Cohort", size(medlarge)) 
       graphout ihds_mob_group_time_p`p'_`level'_f, pdf
   }
+    
+  // /* web version of p25 primary / high school graph */
+  // twoway ///
+  // (rarea lb ub bc_mid if mu == "p25_`level'" & group == 1, color("32 32 32") ) ///
+  // (rarea lb ub bc_mid if mu == "p25_`level'" & group == 2, color("150 150 255") ) ///
+  // (rarea lb ub bc_mid if mu == "p25_`level'" & group == 3, color("252 46 24") ) ///
+  // (rarea lb ub bc_mid if mu == "p25_`level'" & group == 4, color("190 210 160") ) ///
+  // ``level'_arrow' ///
+  //   , legend(off) ///
+  // text(``level'_text_fo' "{stSerif:Forward / Others}"  , size(medsmall) color(black)) ///
+  // text(``level'_text_mu'  "{stSerif:Muslims}"          , size(medsmall) color(black)) ///
+  // text(``level'_text_sc'  "{stSerif:Scheduled Castes}" , size(medsmall) color(black)) ///
+  // text(``level'_text_st'  "{stSerif:Scheduled Tribes}" , size(medsmall) color(black)) ///
+  // ylabel(,) xlabel(1960(10)1980,) ytitle("Share Sons with ``level'_name'", ) xtitle("Birth Cohort", ) ///
+  // 
+  // graphout ihds_mob_group_time_p25_`level'_web
+  // 
 }
+
+
+exit
+exit
+exit
+
 
 /*******************/
 /* STATS FOR PAPER */
@@ -163,21 +208,21 @@ foreach level in prim hs uni {
 use $mobility/ihds/ihds_mobility.dta, clear
   
 /* Muslim male mobility in 1960s */
-bound_mobility [aw=wt] if bc == 1960 & group == 2, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+bound_param [aw=wt] if bc == 1960 & group == 2, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
 local mid = (`r(mu_ub)' + `r(mu_lb)') / 2
 store_tex_constant, file($out/mob_constants) idshort(mob_muslim_1960) idlong(mobility_muslim_1960) value(`mid') desc("Father-son mobility in 1960 (Muslim)")
 
 /* Muslim male mobility in 1985s */
-bound_mobility [aw=wt] if bc == 1985 & group == 2, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+bound_param [aw=wt] if bc == 1985 & group == 2, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
 local mid = (`r(mu_ub)' + `r(mu_lb)') / 2
 store_tex_constant, file($out/mob_constants) idshort(mob_muslim_1985) idlong(mobility_muslim_1985) value(`mid') desc("Father-son mobility at present (Muslim)")
 
 /* SC male mobility in 1985s */
-bound_mobility [aw=wt] if bc == 1985 & group == 3, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+bound_param [aw=wt] if bc == 1985 & group == 3, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
 local mid = (`r(mu_ub)' + `r(mu_lb)') / 2
 store_tex_constant, file($out/mob_constants) idshort(mob_sc_1985) idlong(mobility_sc_1985) value(`mid') desc("Father-son mobility at present (SC)")
 
 /* ST male mobility in 1985s */
-bound_mobility [aw=wt] if bc == 1985 & group == 4, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
+bound_param [aw=wt] if bc == 1985 & group == 4, s(0) t(50) xvar(father_ed_rank_s) yvar(son_ed_rank) forcemono
 local mid = (`r(mu_ub)' + `r(mu_lb)') / 2
 store_tex_constant, file($out/mob_constants) idshort(mob_st_1985) idlong(mobility_st_1985) value(`mid') desc("Father-son mobility at present (ST)")

@@ -1,0 +1,86 @@
+%%%%%%%%%%%%%%%%%%%%%%%
+%% CHANGES OVER TIME %%
+%%%%%%%%%%%%%%%%%%%%%%%
+\begin{landscape}
+\clearpage 
+\pagestyle{fancy}
+\markright{} 
+
+\begin{table}
+  \caption{Changes in Upward Mobility Over Time}
+  \label{tab:mob_changes}
+  \begin{center}
+    \panel{A. Father-son pairs}
+  \end{center}
+\begin{center}
+  \input{\mobilitypath/table_change_time_son.tex} 
+\end{center}
+  \begin{center}
+    \panel{B. Father-daughter pairs}
+  \end{center}
+\begin{center}
+  \input{\mobilitypath/table_change_time_daughter.tex} 
+\end{center}
+\\ 
+\footnotesize{Table~\ref{tab:mob_changes} shows estimates of full
+    sample and subgroup bottom half mobility ($\mu_0^{50}$) for the
+    1960--69 and 1980--89 birth cohorts for father-son (Panel A) and
+    father-daughter (Panel B) pairs. We show both bounds (in square
+    brackets) and 90\% confidence sets (in curly braces) on those
+    bounds. The table also reports the bounds and 90\% confidence sets
+    on the change in bottom half mobility between these two time
+    periods. We obtain confidence sets by generating 1,000 bootstrap
+    draws, estimating bounds on each bootstrap draw, and following the
+    framework in \citeasnoun{cherno2007} to form 90\% confidence
+    sets from bootstrapped bounds. Because these are
+    confidence sets rather than confidence
+    intervals, instead of $p$-values we show the fraction of bootstraps
+    in which the 1960--69 and 1980--89 bounds are overlapping. Source:
+    IHDS (2012).}
+\end{table}
+\end{landscape} 
+%%%%%%%%%%%%%%%%%%%%%%%
+%% GROUP DIFFERENCES %%
+%%%%%%%%%%%%%%%%%%%%%%%
+\clearpage
+\pagestyle{fancy}
+
+\begin{table}[H]
+  \caption{Group Differences in Upward Mobility}
+  \label{tab:group_diffs}
+  \input{\mobilitypath/table_group_diff}
+
+  \newline
+  \newline
+  \footnotesize{Table~\ref{tab:group_diffs} shows estimates of
+    cross-group differences in bottom half mobility ($\mu_0^{50}$) and
+    top half mobility ($\mu_{50}^{100}$) in the 1980--89 birth
+    cohorts. F/O stands for Forwards/Others and SC for Scheduled Castes. We show both bounds (in square brackets) and 90\% confidence sets (in curly braces) on those bounds. We obtain confidence sets by generating 1,000 bootstrap draws, estimating
+    bounds on each bootstrap draw, and following the framework in
+    \citeasnoun{cherno2007} to form 90\% confidence sets from
+    bootstrapped bounds. Because these are confidence sets rather than
+    confidence intervals, instead of $p$-values we show the fraction
+    of the bounds for the two social groups that are overlapping. For
+    example, the value of 0.511 in the final column indicates that
+    51.1\% of the bootstraps generate overlapping bounds for the two
+    groups. Source: IHDS (2012).}
+\end{table}
+
+%%%%%%%%%%%%%%%%%%
+%% CASSAN TABLE %%
+%%%%%%%%%%%%%%%%%%
+\begin{table}[H]
+  \caption{Effect of Scheduled Caste Designation on Upward Mobility}
+  \label{tab:mech_cassan}
+  \begin{center}
+    \begin{tabular}{c}
+    \panel{A. Father-son pairs} \\
+    \input{\mobilitypath/mech_cassan} \\
+    \panel{B. Father-daughter pairs} \\
+    \input{\mobilitypath/mech_cassan_women} \\
+    \end{tabular}
+  \end{center}
+  
+  \footnotesize{Table~\ref{tab:mech_cassan} shows estimates from Equation~\ref{eq:cassan}, which describes the impact of Scheduled Caste designation on upward mobility. The dependent variable is the child education rank. The sample consists of SC children of fathers in approximately the bottom 60\% of the education distribution. \textit{Late SC} is an indicator for jati groups that were added to Scheduled Caste lists in the caste redesignation of 1977. \textit{Post} is an indicator for cohorts born after 1970. The sample in Panel A is all men, while Panel B is all women. In the Column 1 estimation, the are 696 ``late SC'' men, of whom 438 were born after 1970. For women, these numbers are 516 and 391 respectively. All estimations control for region $\times$ cohort, jati $\times$ region, jati $\times$ cohort, and birth year, and are clustered at the jati and the region levels. Source: IHDS (2012).}
+\end{table}
+
