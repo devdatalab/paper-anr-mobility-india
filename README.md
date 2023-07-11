@@ -10,7 +10,7 @@ This repository contains:
 
 Bottom half mobility is the expected education rank of a son born to a father in the bottom 50% of the father education distribution (of the son's birth cohort).
 
-Replication data can be found at this [dropbox link](https://www.dropbox.com/s/hhtts5hdyuc18bw/mobility_packet.zip?dl=0); [replication instructions](https://github.com/devdatalab/paper-anr-mobility-india/tree/repl#replication-instructions-for-asher-novosad-and-rafkin-2022) are at the bottom of this document.
+Replication data can be found at this [Google Drive link](https://drive.google.com/file/d/1LE7ozFGZwkIk0V38iwIDqH5SAi56T1A8/view?usp=sharing); [replication instructions](https://github.com/devdatalab/paper-anr-mobility-india/tree/repl#replication-instructions-for-asher-novosad-and-rafkin-2022) are at the bottom of this document.
 
 ## Calculating measures of mobility using ANR2020 (Stata)
 
@@ -129,7 +129,7 @@ The file `make_mobility.do` describes the build and analysis process in detail.
 To regenerate the tables and figures from the paper, take the
 following steps:
 
-1. Download and unzip the replication data package `mobility-packet.zip` from this [Google Drive Folder](https://www.dropbox.com/s/hhtts5hdyuc18bw/mobility_packet.zip?dl=0)
+1. Download and unzip the replication data package `mobility-packet.zip` from this [Google Drive Folder](https://drive.google.com/file/d/1LE7ozFGZwkIk0V38iwIDqH5SAi56T1A8/view?usp=sharing)
    
 2. Clone this repo (github) or copy all the code into a folder (icpsr)
 
