@@ -118,4 +118,4 @@ foreach var in $hh_vlist {
 }
 
 /* create a tex table with outputs */
-table_from_tpl, t($ddl/core/mobility/a/bottom_half_stats.tpl) r($tmp/bottom_half_stats.csv) o($out/bottom_half_stats.tex)
+table_from_tpl, t($mobcode/a/bottom_half_stats.tpl) r($tmp/bottom_half_stats.csv) o($out/bottom_half_stats.tex)

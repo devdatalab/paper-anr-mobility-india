@@ -26,6 +26,7 @@ cap mkdir $out
 cap mkdir $out/interm
 cap mkdir $tmp
 cap mkdir $mobility
+cap mkdir $mobility/out
 
 /* load Stata programs */
 qui do masala-merge/masala_merge
