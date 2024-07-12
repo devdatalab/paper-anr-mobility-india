@@ -103,7 +103,15 @@ The Matlab code can be readily modified to impose any kind of structural constra
 
 ## Data Availability
 
-The primary data source for this project is the [India Human Development Survey II](https://ihds.umd.edu/data/ihds-2). The replication data repo includes some files from IHDS; visit the [IHDS site](https://ihds.umd.edu/data/ihds-2) for more information and data from IHDS. The data are open to the public. All data sources used in the paper are available in the paper's data packet. Ancillary analyses use data from NSS 68 and the U.S. Census.
+All data sources used in the paper are available in the paper's data packet. 
+
+The primary data source is the [India Human Development Survey II](https://ihds.umd.edu/data/ihds-2). The replication data repo includes some files from IHDS; the full IHDS can currently be downloaded from [this link](https://www.icpsr.umich.edu/web/DSDR/studies/36151/datadocumentation). 
+
+Ancillary analyses use data from NSS 68 and the U.S. Census. As of July 2024, the NSS is hosted at the [National Data Archive](https://microdata.gov.in/nada43/index.php/catalog/126); create an account to download it.
+
+Data from the Indian Census can be accessed via the [SHRUG](https://www.devdatalab.org/shrug_download/).
+
+U.S. transition matrices by race were obtained from Chetty et al. (2020), accessed at the Opportunity Insights web site [here](https://opportunityinsights.org/data/?geographic_level=0&topic=0&paper_id=992#resource-listing) in 2020.
 
 The authors have legitimate access to and permission to use the data used in this manuscript. The data for the project have been deposited into openICPSR (openicpsr-184504).
 
