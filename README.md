@@ -130,7 +130,7 @@ This package is designed to be run on a *nix system with Python 3.2+, Matlab 201
 
 ## Description of programs / code
 
-The file `make_mobility.do` describes the build and analysis process in detail.
+The file `make_mobility.do` describes the build and analysis process in detail. We use the Stata packages `coefplot`, `grc1leg2`, `outreg2`, `reghdfe`, and the DevDataLab packages `stata-tex` and `masala-merge`.
 
 ## Instructions to Replicators
 
@@ -198,3 +198,12 @@ The mapping of results output names to tables and figures is as follows:
 | Table C1  | sim_moments.tex                        |
 | Table C2  | sim_param_ranks.tex                    |
 
+## District level mobility estimates
+
+District-level estimates and mapping resources are available in this [Google Drive folder](https://drive.google.com/drive/folders/1DYxSHV8V7osTrhvDabwlkpteWNDC2f0V). The folder contains the following files:
+
+- `secc_mobility_dist_both.dta`: Stata file with district-level bottom-half mobility estimates. Key variables are `pc11_state_id`/`pc11_district_id` (2011 Census IDs), `p25_lb`/`p25_ub` (lower/upper bounds for mu-0-50), `sample_size` (father-son pairs), and `is_mon` (indicator that bins were collapsed to enforce monotonicity).
+- `pc11-district-simplified.zip`: Census 2011 district shapefiles (DBF/PRJ/SHP/SHX) that match the IDs in the mobility estimates. The zip contains the full shapefile set; unzip locally before use.
+- `explore_mob.py`: Helper script used to generate the district mobility maps.
+
+These resources can be combined to visualize or analyze district-level mobility across India.
